@@ -103,6 +103,14 @@ struct ooo_model_instr : champsim::program_ordered<ooo_model_instr> {
   bool branch_prediction = false;
   bool branch_mispredicted = false; // A branch can be mispredicted even if the direction prediction is correct when the predicted target is not correct
 
+    // Last Value Predictor fields
+    uint64_t predicted_value = 0;        // The predicted value
+bool value_predicted = false;         // Was a prediction made?
+bool prediction_correct = false;      // Was the prediction correct?
+bool value_executed_speculatively = false; // Did we speculatively complete this load?
+bool needs_squash = false;            // Does this instruction need to squash dependents?
+bool prediction_verified = false;     // Has the prediction been verified with actual data?
+
   std::array<uint8_t, 2> asid = {std::numeric_limits<uint8_t>::max(), std::numeric_limits<uint8_t>::max()};
 
   branch_type branch{NOT_BRANCH};
