@@ -104,6 +104,11 @@ struct ooo_model_instr : champsim::program_ordered<ooo_model_instr> {
   bool branch_mispredicted = false; // A branch can be mispredicted even if the direction prediction is correct when the predicted target is not correct
 
   std::array<uint8_t, 2> asid = {std::numeric_limits<uint8_t>::max(), std::numeric_limits<uint8_t>::max()};
+  
+  //ADDED
+  uint64_t predicted_value = 0;    // The predicted value
+  bool value_predicted = false;     // Was a prediction made?
+  bool prediction_correct = false;  // Was the prediction correct?
 
   branch_type branch{NOT_BRANCH};
   champsim::address branch_target{};

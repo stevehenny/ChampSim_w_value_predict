@@ -82,6 +82,52 @@ struct LSQ_ENTRY : champsim::program_ordered<LSQ_ENTRY> {
 // cpu
 class O3_CPU : public champsim::operable
 {
+// Last Value Predictor structure
+struct LastValuePredictor {
+  std::unordered_map<uint64_t, uint64_t> value_table; // PC -> last value
+  std::unordered_map<uint64_t, bool> confidence_table; // PC -> seen before
+  
+  uint64_t predictions = 0;
+  uint64_t correct_predictions = 0;
+  uint64_t incorrect_predictions = 0;
+  
+  // Predict value for a given PC
+  bool predict(uint64_t pc, uint64_t& predicted_value) {
+    auto it = value_table.find(pc);
+    if (it != value_table.end() && confidence_table[pc]) {
+      predicted_value = it->second;
+      predictions++;
+      return true; // Prediction available
+    }
+    return false; // No prediction
+  }
+  
+  // Update predictor with actual value
+  void update(uint64_t pc, uint64_t actual_value, bool was_correct) {
+    value_table[pc] = actual_value;
+    confidence_table[pc] = true;
+    
+    if (was_correct) {
+      correct_predictions++;
+    } else {
+      incorrect_predictions++;
+    }
+  }
+  
+  // Print statistics
+  void print_stats() {
+    if (predictions > 0) {
+      fmt::print("Last Value Predictor Stats:\n");
+      fmt::print("  Total predictions: {}\n", predictions);
+      fmt::print("  Correct: {}\n", correct_predictions);
+      fmt::print("  Incorrect: {}\n", incorrect_predictions);
+      fmt::print("  Accuracy: {:.2f}%\n", (100.0 * correct_predictions / predictions));
+    }
+  }
+};
+
+// Add this member variable in the O3_CPU class (add it near other member variables)
+LastValuePredictor lvp;
 public:
   uint32_t cpu = 0;
 
