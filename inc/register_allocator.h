@@ -36,12 +36,5 @@ public:
   int count_reg_dependencies(const ooo_model_instr& instr) const;
   void reset_frontend_RAT();
   void print_deadlock();
-  void squash_dest_register(PHYSICAL_REGISTER_ID dreg) {
-  // Mark the physical register as invalid
-  // This forces dependent instructions to wait for re-execution
-  if (dreg >= 0 && dreg < static_cast<PHYSICAL_REGISTER_ID>(physical_register_file.size())) {
-    physical_register_file.at(dreg).valid = false;
-  }
-}
 };
 #endif

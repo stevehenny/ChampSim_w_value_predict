@@ -102,11 +102,6 @@ void O3_CPU::end_phase(unsigned finished_cpu)
     finish_phase_time = current_time;
 
     roi_stats = sim_stats;
-    // *** ADD THIS AT THE END ***
-    // Print Last Value Predictor statistics
-    fmt::print("\n");
-    lvp.print_stats();
-    // *** END ADDITION ***
   }
 }
 
@@ -552,39 +547,6 @@ void O3_CPU::do_memory_scheduling(ooo_model_instr& instr)
 
 long O3_CPU::operate_lsq()
 {
-   // *** ADD THIS SECTION FOR VALUE PREDICTION AND SPECULATIVE EXECUTION ***
-  // *** VALUE PREDICTION AND SPECULATIVE EXECUTION ***
-  // Make value predictions for loads in the LQ and speculatively complete them
-  for (auto& lq_entry : LQ) {
-    if (lq_entry.has_value() && !lq_entry->fetch_issued) {
-      // Find the corresponding ROB entry
-      auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), 
-                                 ooo_model_instr::matches_id(lq_entry->instr_id));
-      
-      if (rob_it != std::end(ROB) && !rob_it->value_predicted && rob_it->executed) {
-        // Try to predict the value
-        uint64_t predicted_val;
-        if (lvp.predict(lq_entry->ip.to<uint64_t>(), predicted_val)) {
-          rob_it->predicted_value = predicted_val;
-          rob_it->value_predicted = true;
-          
-          // SPECULATIVE EXECUTION: Mark this load as completed speculatively
-          rob_it->value_executed_speculatively = true;
-          
-          if constexpr (champsim::debug_print) {
-            fmt::print("[LVP] PREDICT instr_id: {} ip: {} predicted: {:#x} - SPECULATIVE COMPLETE\n", 
-                      rob_it->instr_id, rob_it->ip, predicted_val);
-          }
-          
-          // Mark the memory operation as completed speculatively
-          if (rob_it->completed_mem_ops < rob_it->num_mem_ops()) {
-            rob_it->completed_mem_ops++;
-          }
-        }
-      }
-    }
-  }
-  // *** END VALUE PREDICTION SECTION ***
   champsim::bandwidth store_bw{SQ_WIDTH};
 
   const auto complete_id = std::empty(ROB) ? std::numeric_limits<uint64_t>::max() : ROB.front().instr_id;
@@ -730,101 +692,7 @@ long O3_CPU::handle_memory_return()
   for (champsim::bandwidth l1d_bw{L1D_BANDWIDTH}; l1d_bw.has_remaining() && l1d_it != std::end(L1D_bus.lower_level->returned); l1d_bw.consume(), ++l1d_it) {
     for (auto& lq_entry : LQ) {
       if (lq_entry.has_value() && lq_entry->fetch_issued && champsim::block_number{lq_entry->virtual_address} == champsim::block_number{l1d_it->v_address}) {
-        
-        // *** VALUE PREDICTION VERIFICATION AND RECOVERY ***
-        auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), 
-                                   ooo_model_instr::matches_id(lq_entry->instr_id));
-        
-        if (rob_it != std::end(ROB) && !rob_it->prediction_verified) {
-          uint64_t actual_value = lq_entry->virtual_address.to<uint64_t>();
-          
-          if (rob_it->value_predicted && rob_it->value_executed_speculatively) {
-            // Verify the prediction
-            bool correct = (rob_it->predicted_value == actual_value);
-            rob_it->prediction_correct = correct;
-            rob_it->prediction_verified = true;
-            
-            lvp.update(lq_entry->ip.to<uint64_t>(), actual_value, correct);
-            
-            if (!correct) {
-              // MISPREDICTION - Perform recovery
-              lvp.squashes++;
-              
-              if constexpr (champsim::debug_print) {
-                fmt::print("[LVP] MISPREDICTION instr_id: {} ip: {} predicted: {:#x} actual: {:#x}\n", 
-                          rob_it->instr_id, rob_it->ip, rob_it->predicted_value, actual_value);
-              }
-              
-              // Squash all younger instructions in ROB
-              auto squash_start = std::next(rob_it);
-              for (auto squash_it = squash_start; squash_it != std::end(ROB); ++squash_it) {
-                // Only squash if the instruction has executed/completed based on speculation
-                if (squash_it->executed || squash_it->completed) {
-                  squash_it->scheduled = false;
-                  squash_it->executed = false;
-                  squash_it->completed = false;
-                  squash_it->value_predicted = false;
-                  squash_it->value_executed_speculatively = false;
-                  squash_it->prediction_verified = false;
-                  squash_it->completed_mem_ops = 0;
-                  
-                  // Invalidate destination registers
-                  for (auto dreg : squash_it->destination_registers) {
-                    reg_allocator.squash_dest_register(dreg);
-                  }
-                  
-                  if constexpr (champsim::debug_print) {
-                    fmt::print("[LVP] SQUASH instr_id: {}\n", squash_it->instr_id);
-                  }
-                }
-              }
-              
-              // Fix the mispredicted load's mem ops count
-              // It was incremented speculatively, now we need to allow it to complete properly
-              // Don't call finish() yet - let it happen naturally after squash recovery
-              
-            } else {
-              // CORRECT PREDICTION
-              if constexpr (champsim::debug_print) {
-                fmt::print("[LVP] CORRECT instr_id: {} ip: {} value: {:#x}\n", 
-                          rob_it->instr_id, rob_it->ip, actual_value);
-              }
-              // Speculative completion was correct, just mark as finished
-              // Note: completed_mem_ops was already incremented during speculation
-            }
-            
-          } else if (rob_it->value_predicted && !rob_it->value_executed_speculatively) {
-            // Predicted but didn't speculate - just track accuracy
-            bool correct = (rob_it->predicted_value == actual_value);
-            rob_it->prediction_verified = true;
-            lvp.update(lq_entry->ip.to<uint64_t>(), actual_value, correct);
-          } else {
-            // No prediction made - train the predictor
-            lvp.update(lq_entry->ip.to<uint64_t>(), actual_value, false);
-          }
-        }
-        
-        // Finish the load appropriately
-        if (rob_it != std::end(ROB)) {
-          if (rob_it->value_executed_speculatively && rob_it->prediction_verified) {
-            if (rob_it->prediction_correct) {
-              // Correct speculation - already counted in completed_mem_ops, don't call finish()
-            } else {
-              // Misprediction - need to properly complete now
-              // The speculative increment was wrong, so decrement first
-              if (rob_it->completed_mem_ops > 0) {
-                rob_it->completed_mem_ops--;
-              }
-              // Now increment correctly
-              lq_entry->finish(std::begin(ROB), std::end(ROB));
-            }
-          } else {
-            // Normal load (not speculative) - call finish normally
-            lq_entry->finish(std::begin(ROB), std::end(ROB));
-          }
-        }
-        // *** END VALUE PREDICTION VERIFICATION AND RECOVERY ***
-        
+        lq_entry->finish(std::begin(ROB), std::end(ROB));
         lq_entry.reset();
         ++progress;
       }
@@ -931,7 +799,6 @@ void O3_CPU::print_deadlock()
   std::string_view sq_fmt{"instr_id: {} address: {} fetch_issued: {} event_cycle: {} LQ waiting: {}"};
   champsim::range_print_deadlock(LQ, "cpu" + std::to_string(cpu) + "_LQ", lq_fmt, lq_pack);
   champsim::range_print_deadlock(SQ, "cpu" + std::to_string(cpu) + "_SQ", sq_fmt, sq_pack);
-  lvp.print_stats();
 }
 // LCOV_EXCL_STOP
 
