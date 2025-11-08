@@ -107,3 +107,11 @@ void RegisterAllocator::print_deadlock()
   }
   fmt::print("\n");
 }
+
+//ADDED
+void RegisterAllocator::invalidate_register(PHYSICAL_REGISTER_ID physreg)
+{
+  if (physreg >= 0 && physreg < physical_register_file.size()) {
+    physical_register_file[physreg].valid = false;
+  }
+}

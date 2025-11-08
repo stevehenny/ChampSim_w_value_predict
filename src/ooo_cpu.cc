@@ -476,8 +476,30 @@ long O3_CPU::execute_instruction()
   champsim::bandwidth exec_bw{EXEC_WIDTH};
   for (auto rob_it = std::begin(ROB); rob_it != std::end(ROB) && exec_bw.has_remaining(); ++rob_it) {
     if (rob_it->scheduled && !rob_it->executed && rob_it->ready_time <= current_time) {
-      bool ready = std::all_of(std::begin(rob_it->source_registers), std::end(rob_it->source_registers),
-                               [&alloc = std::as_const(reg_allocator)](auto srcreg) { return alloc.isValid(srcreg); });
+      
+      // *** MODIFIED: Check dependencies with value prediction support ***
+      bool ready;
+      
+      // For loads with value predictions, we can execute even if dependent registers aren't ready
+      // The predicted value will be forwarded to dependent instructions
+      if (rob_it->value_predicted && !rob_it->source_memory.empty()) {
+        // Load with prediction: only check address calculation dependencies
+        // (In reality, loads typically don't have register destinations to predict,
+        //  but rather the *loaded value* is what we predict)
+        ready = true; // Allow execution with prediction
+        
+        if constexpr (champsim::debug_print) {
+          fmt::print("[LVP] EXECUTE with prediction instr_id: {} ip: {}\n", 
+                    rob_it->instr_id, rob_it->ip);
+        }
+      } else {
+        // Normal execution: all source registers must be ready
+        ready = std::all_of(std::begin(rob_it->source_registers), std::end(rob_it->source_registers),
+                           [&alloc = std::as_const(reg_allocator)](auto srcreg) { 
+                             return alloc.isValid(srcreg); 
+                           });
+      }
+      
       if (ready) {
         do_execution(*rob_it);
         exec_bw.consume();
@@ -488,10 +510,24 @@ long O3_CPU::execute_instruction()
   return exec_bw.amount_consumed();
 }
 
+// Also need to modify do_execution to mark destination registers as valid when using predictions
 void O3_CPU::do_execution(ooo_model_instr& instr)
 {
   instr.executed = true;
   instr.ready_time = current_time + (warmup ? champsim::chrono::clock::duration{} : EXEC_LATENCY);
+
+  // *** MODIFIED: If we have a value prediction, immediately mark registers as valid ***
+  if (instr.value_predicted && !instr.destination_registers.empty()) {
+    // Forward the predicted value to dependent instructions
+    for (auto dreg : instr.destination_registers) {
+      reg_allocator.complete_dest_register(dreg);
+    }
+    lvp.early_executions++;
+    if constexpr (champsim::debug_print) {
+      fmt::print("[LVP] FORWARD predicted value instr_id: {} ip: {}\n", 
+                instr.instr_id, instr.ip);
+    }
+  }
 
   // Mark LQ entries as ready to translate
   for (auto& lq_entry : LQ) {
@@ -511,6 +547,7 @@ void O3_CPU::do_execution(ooo_model_instr& instr)
     fmt::print("[ROB] {} instr_id: {} ready_time: {}\n", __func__, instr.instr_id, instr.ready_time.time_since_epoch() / clock_period);
   }
 }
+
 
 void O3_CPU::do_memory_scheduling(ooo_model_instr& instr)
 {
