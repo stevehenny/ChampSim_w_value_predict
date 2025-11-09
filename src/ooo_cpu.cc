@@ -476,30 +476,19 @@ long O3_CPU::execute_instruction()
   champsim::bandwidth exec_bw{EXEC_WIDTH};
   for (auto rob_it = std::begin(ROB); rob_it != std::end(ROB) && exec_bw.has_remaining(); ++rob_it) {
     if (rob_it->scheduled && !rob_it->executed && rob_it->ready_time <= current_time) {
-      
-      // *** MODIFIED: Check dependencies with value prediction support ***
+
       bool ready;
+
+      // For loads, we can make predictions even if sources aren't ready (for address gen)
+      // But typically loads don't predict their own value - they just forward it
+      // The key insight: instructions that CONSUME predicted values should check validity
       
-      // For loads with value predictions, we can execute even if dependent registers aren't ready
-      // The predicted value will be forwarded to dependent instructions
-      if (rob_it->value_predicted && !rob_it->source_memory.empty()) {
-        // Load with prediction: only check address calculation dependencies
-        // (In reality, loads typically don't have register destinations to predict,
-        //  but rather the *loaded value* is what we predict)
-        ready = true; // Allow execution with prediction
-        
-        if constexpr (champsim::debug_print) {
-          fmt::print("[LVP] EXECUTE with prediction instr_id: {} ip: {}\n", 
-                    rob_it->instr_id, rob_it->ip);
-        }
-      } else {
-        // Normal execution: all source registers must be ready
-        ready = std::all_of(std::begin(rob_it->source_registers), std::end(rob_it->source_registers),
-                           [&alloc = std::as_const(reg_allocator)](auto srcreg) { 
-                             return alloc.isValid(srcreg); 
-                           });
-      }
-      
+      // Check if all source registers are valid (not waiting on mispredicted values)
+      ready = std::all_of(std::begin(rob_it->source_registers), std::end(rob_it->source_registers),
+                          [&alloc = std::as_const(reg_allocator)](auto srcreg) { 
+                            return alloc.isValid(srcreg); 
+                          });
+
       if (ready) {
         do_execution(*rob_it);
         exec_bw.consume();
@@ -516,17 +505,18 @@ void O3_CPU::do_execution(ooo_model_instr& instr)
   instr.executed = true;
   instr.ready_time = current_time + (warmup ? champsim::chrono::clock::duration{} : EXEC_LATENCY);
 
-  // *** MODIFIED: If we have a value prediction, immediately mark registers as valid ***
+  // If this instruction has a value prediction, forward it immediately
+  // This allows dependent instructions to execute speculatively
   if (instr.value_predicted && !instr.destination_registers.empty()) {
-    // Forward the predicted value to dependent instructions
     for (auto dreg : instr.destination_registers) {
       reg_allocator.complete_dest_register(dreg);
     }
     lvp.early_executions++;
-    if constexpr (champsim::debug_print) {
-      fmt::print("[LVP] FORWARD predicted value instr_id: {} ip: {}\n", 
-                instr.instr_id, instr.ip);
-    }
+    
+    //if constexpr (champsim::debug_print) {
+      fmt::print("[LVP] FORWARD predicted value instr_id: {} ip: {} value: {:#x}\n", 
+                 instr.instr_id, instr.ip, instr.predicted_value);
+    //}
   }
 
   // Mark LQ entries as ready to translate
@@ -544,7 +534,8 @@ void O3_CPU::do_execution(ooo_model_instr& instr)
   }
 
   if constexpr (champsim::debug_print) {
-    fmt::print("[ROB] {} instr_id: {} ready_time: {}\n", __func__, instr.instr_id, instr.ready_time.time_since_epoch() / clock_period);
+    fmt::print("[ROB] {} instr_id: {} ready_time: {}\n", __func__, instr.instr_id, 
+               instr.ready_time.time_since_epoch() / clock_period);
   }
 }
 
@@ -749,7 +740,6 @@ long O3_CPU::handle_memory_return()
       l1i_entry.instr_depend_on_me.erase(std::begin(l1i_entry.instr_depend_on_me));
     }
 
-    // remove this entry if we have serviced all of its instructions
     if (l1i_entry.instr_depend_on_me.empty()) {
       L1I_bus.lower_level->returned.pop_front();
       ++progress;
@@ -760,36 +750,48 @@ long O3_CPU::handle_memory_return()
   for (champsim::bandwidth l1d_bw{L1D_BANDWIDTH}; l1d_bw.has_remaining() && l1d_it != std::end(L1D_bus.lower_level->returned); l1d_bw.consume(), ++l1d_it) {
     for (auto& lq_entry : LQ) {
       if (lq_entry.has_value() && lq_entry->fetch_issued && champsim::block_number{lq_entry->virtual_address} == champsim::block_number{l1d_it->v_address}) {
-        
-        // *** ADD VALUE PREDICTION VERIFICATION ***
-        // Find the corresponding ROB entry to verify prediction
-        auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), 
-                                   ooo_model_instr::matches_id(lq_entry->instr_id));
-        
+
+        // *** MODIFIED: VALUE PREDICTION VERIFICATION WITH SQUASHING ***
+        auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), ooo_model_instr::matches_id(lq_entry->instr_id));
+
         if (rob_it != std::end(ROB)) {
-          // For this simple implementation, we'll use the address as a proxy for the value
-          // In a real implementation, you'd extract the actual loaded data from the cache line
+          // In a real implementation, extract the actual loaded value from the cache line
+          // For this example, we use the address as a proxy for the value
           uint64_t actual_value = lq_entry->virtual_address.to<uint64_t>();
-          
+
           if (rob_it->value_predicted) {
             // Check if prediction was correct
             bool correct = (rob_it->predicted_value == actual_value);
             rob_it->prediction_correct = correct;
-            
+
             // Update the predictor
             lvp.update(lq_entry->ip.to<uint64_t>(), actual_value, correct);
-            
-            if constexpr (champsim::debug_print) {
-              fmt::print("[LVP] VERIFY instr_id: {} ip: {} predicted: {:#x} actual: {:#x} correct: {}\n", 
-                        rob_it->instr_id, rob_it->ip, rob_it->predicted_value, actual_value, correct);
+
+            if (!correct) {
+              // *** SQUASH DEPENDENT INSTRUCTIONS ***
+              //if constexpr (champsim::debug_print) {
+                fmt::print("[LVP] MISPREDICT instr_id: {} ip: {} predicted: {:#x} actual: {:#x}\n", 
+                           rob_it->instr_id, rob_it->ip, rob_it->predicted_value, actual_value);
+              //}
+
+              // Update the instruction with correct value
+              rob_it->predicted_value = actual_value;
+              
+              // Squash all dependent instructions
+              squash_value_misprediction(*rob_it);
+            } else {
+              //if constexpr (champsim::debug_print) {
+                fmt::print("[LVP] CORRECT instr_id: {} ip: {} value: {:#x}\n", 
+                           rob_it->instr_id, rob_it->ip, actual_value);
+              //}
             }
           } else {
-            // First time seeing this PC, just update the predictor
+            // No prediction was made, just update the predictor for next time
             lvp.update(lq_entry->ip.to<uint64_t>(), actual_value, false);
           }
         }
         // *** END VALUE PREDICTION VERIFICATION ***
-        
+
         lq_entry->finish(std::begin(ROB), std::end(ROB));
         lq_entry.reset();
         ++progress;
@@ -944,4 +946,84 @@ bool CacheBus::issue_write(request_type data_packet)
   data_packet.response_requested = false;
 
   return lower_level->add_wq(data_packet);
+}
+
+void O3_CPU::squash_value_misprediction(ooo_model_instr& mispredicted_instr)
+{
+  //if constexpr (champsim::debug_print) {
+    fmt::print("[LVP] SQUASH instr_id: {} ip: {}\n", mispredicted_instr.instr_id, mispredicted_instr.ip);
+  //}
+
+  lvp.squashes++;
+
+  // Find all instructions in ROB that depend on the mispredicted value
+  // We need to walk forward from the mispredicted instruction
+  bool found_mispredict = false;
+  
+  for (auto& rob_entry : ROB) {
+    // Skip until we find the mispredicted instruction
+    if (!found_mispredict) {
+      if (rob_entry.instr_id == mispredicted_instr.instr_id) {
+        found_mispredict = true;
+      }
+      continue;
+    }
+
+    // Now we're looking at younger instructions
+    // Check if this instruction depends on the mispredicted one
+    bool is_dependent = false;
+    
+    // Check register dependencies
+    for (auto src_reg : rob_entry.source_registers) {
+      for (auto dest_reg : mispredicted_instr.destination_registers) {
+        // In a real implementation, you'd check if the architectural register matches
+        // For now, we'll use a simplified check
+        if (src_reg == dest_reg) {
+          is_dependent = true;
+          break;
+        }
+      }
+      if (is_dependent) break;
+    }
+
+    // If dependent, squash this instruction
+    if (is_dependent) {
+      //if constexpr (champsim::debug_print) {
+        fmt::print("[LVP] SQUASH dependent instr_id: {} (depends on {})\n", 
+                   rob_entry.instr_id, mispredicted_instr.instr_id);
+      //}
+
+      // Mark instruction for re-execution
+      if (rob_entry.executed) {
+        rob_entry.executed = false;
+        rob_entry.ready_time = current_time + EXEC_LATENCY;
+      }
+      
+      // Mark as incomplete
+      if (rob_entry.completed) {
+        rob_entry.completed = false;
+      }
+
+      // Invalidate register outputs
+      for (auto dreg : rob_entry.destination_registers) {
+        // Mark the physical register as invalid, forcing dependents to wait
+        // The register allocator will handle the validity bits
+        //if constexpr (champsim::debug_print) {
+          fmt::print("[LVP] Invalidating register for instr_id: {}\n", rob_entry.instr_id);
+        //}
+      }
+
+      // Clear any value prediction this instruction had
+      if (rob_entry.value_predicted) {
+        rob_entry.value_predicted = false;
+        rob_entry.predicted_value = 0;
+      }
+    }
+  }
+
+  // The mispredicted instruction itself needs to forward the correct value now
+  // Mark its destination registers as valid with the correct value
+  for (auto dreg : mispredicted_instr.destination_registers) {
+    reg_allocator.complete_dest_register(dreg);
+  }
 }
