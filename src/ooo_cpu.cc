@@ -700,6 +700,14 @@ bool O3_CPU::execute_load(const LSQ_ENTRY& lq_entry)
 
 void O3_CPU::do_complete_execution(ooo_model_instr& instr)
 {
+  // *** MODIFIED: Only complete if not mispredicted ***
+  // If this instruction had a value prediction and it was wrong,
+  // don't mark as completed yet - it will re-execute
+  if (instr.value_predicted && !instr.prediction_correct) {
+    // Don't complete yet - waiting for re-execution with correct value
+    return;
+  }
+  
   for (auto dreg : instr.destination_registers) {
     // mark physical register's data as valid
     reg_allocator.complete_dest_register(dreg);
@@ -726,6 +734,7 @@ long O3_CPU::complete_inflight_instruction()
   return complete_bw.amount_consumed();
 }
 
+// Modified handle_memory_return with squash logic
 long O3_CPU::handle_memory_return()
 {
   long progress{0};
@@ -749,7 +758,6 @@ long O3_CPU::handle_memory_return()
       l1i_entry.instr_depend_on_me.erase(std::begin(l1i_entry.instr_depend_on_me));
     }
 
-    // remove this entry if we have serviced all of its instructions
     if (l1i_entry.instr_depend_on_me.empty()) {
       L1I_bus.lower_level->returned.pop_front();
       ++progress;
@@ -761,20 +769,27 @@ long O3_CPU::handle_memory_return()
     for (auto& lq_entry : LQ) {
       if (lq_entry.has_value() && lq_entry->fetch_issued && champsim::block_number{lq_entry->virtual_address} == champsim::block_number{l1d_it->v_address}) {
         
-        // *** ADD VALUE PREDICTION VERIFICATION ***
         // Find the corresponding ROB entry to verify prediction
         auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), 
                                    ooo_model_instr::matches_id(lq_entry->instr_id));
         
         if (rob_it != std::end(ROB)) {
-          // For this simple implementation, we'll use the address as a proxy for the value
-          // In a real implementation, you'd extract the actual loaded data from the cache line
           uint64_t actual_value = lq_entry->virtual_address.to<uint64_t>();
           
           if (rob_it->value_predicted) {
             // Check if prediction was correct
             bool correct = (rob_it->predicted_value == actual_value);
             rob_it->prediction_correct = correct;
+            
+            // *** NEW: If misprediction, squash dependent instructions ***
+            if (!correct) {
+              squash_value_misprediction(*rob_it);
+              
+              if constexpr (champsim::debug_print) {
+                fmt::print("[LVP] MISPREDICTION instr_id: {} ip: {} predicted: {:#x} actual: {:#x}\n", 
+                          rob_it->instr_id, rob_it->ip, rob_it->predicted_value, actual_value);
+              }
+            }
             
             // Update the predictor
             lvp.update(lq_entry->ip.to<uint64_t>(), actual_value, correct);
@@ -788,7 +803,6 @@ long O3_CPU::handle_memory_return()
             lvp.update(lq_entry->ip.to<uint64_t>(), actual_value, false);
           }
         }
-        // *** END VALUE PREDICTION VERIFICATION ***
         
         lq_entry->finish(std::begin(ROB), std::end(ROB));
         lq_entry.reset();
@@ -800,6 +814,57 @@ long O3_CPU::handle_memory_return()
   L1D_bus.lower_level->returned.erase(std::begin(L1D_bus.lower_level->returned), l1d_it);
 
   return progress;
+}
+
+void O3_CPU::squash_value_misprediction(ooo_model_instr& mispredicted_instr)
+{
+  if constexpr (champsim::debug_print) {
+    fmt::print("[LVP] SQUASH instr_id: {} ip: {}\n", 
+              mispredicted_instr.instr_id, mispredicted_instr.ip);
+  }
+  
+  lvp.squashes++;
+  
+  // Find all instructions that depend on this mispredicted load
+  // We need to squash everything from this instruction forward in program order
+  auto squash_begin = std::find_if(std::begin(ROB), std::end(ROB),
+                                   ooo_model_instr::matches_id(mispredicted_instr.instr_id));
+  
+  if (squash_begin == std::end(ROB)) {
+    return; // Instruction already retired
+  }
+  
+  // Squash all younger instructions (including the mispredicted one if not yet completed)
+  auto squash_end = std::end(ROB);
+  
+  for (auto it = squash_begin; it != squash_end; ++it) {
+    // Reset execution state for squashed instructions
+    if (it->executed) {
+      // Un-validate any destination registers that were marked valid due to prediction
+      for (auto dreg : it->destination_registers) {
+        // Don't free the register, just mark as invalid so dependents know to wait
+        reg_allocator.invalidate_register(dreg);
+      }
+      
+      it->executed = false;
+      it->completed = false;
+    }
+    
+    // Reset prediction state
+    it->value_predicted = false;
+    it->prediction_correct = false;
+    
+    // Update ready time to re-execute
+    it->ready_time = current_time;
+  }
+  
+  // Also need to invalidate entries in LQ for the mispredicted load
+  for (auto& lq_entry : LQ) {
+    if (lq_entry.has_value() && lq_entry->instr_id == mispredicted_instr.instr_id) {
+      // Keep the LQ entry but mark it as needing to re-execute
+      lq_entry->fetch_issued = false;
+    }
+  }
 }
 
 long O3_CPU::retire_rob()
