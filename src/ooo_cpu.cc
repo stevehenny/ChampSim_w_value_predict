@@ -457,15 +457,24 @@ long O3_CPU::schedule_instruction()
 
 void O3_CPU::do_scheduling(ooo_model_instr& instr)
 {
-  // Mark register dependencies
+  // Mark register dependencies - rename source registers
   for (auto& src_reg : instr.source_registers) {
-    // rename source register
     src_reg = reg_allocator.rename_src_register(src_reg);
   }
 
+  // Rename destination registers WITH HISTORY TRACKING
   for (auto& dreg : instr.destination_registers) {
-    // rename destination register
-    dreg = reg_allocator.rename_dest_register(dreg, instr.instr_id);
+    // STEP 1: Get the CURRENT mapping before we change it
+    PHYSICAL_REGISTER_ID old_phys_reg = reg_allocator.get_current_mapping(dreg);
+    
+    // STEP 2: Allocate new physical register and update RAT
+    PHYSICAL_REGISTER_ID new_phys_reg = reg_allocator.rename_dest_register(dreg, instr.instr_id);
+    
+    // STEP 3: Record this rename for potential rollback on value misprediction
+    reg_allocator.record_rename(instr.instr_id, dreg, old_phys_reg, new_phys_reg);
+    
+    // STEP 4: Update the instruction with the new physical register
+    dreg = new_phys_reg;
   }
 
   instr.scheduled = true;
@@ -583,14 +592,52 @@ long O3_CPU::operate_lsq()
 {
   champsim::bandwidth store_bw{SQ_WIDTH};
 
-  const auto complete_id = std::empty(ROB) ? std::numeric_limits<uint64_t>::max() : ROB.front().instr_id;
-  auto do_complete = [time = current_time, finished = LSQ_ENTRY::precedes(complete_id), this](const auto& x) {
-    return finished(x) && x.ready_time <= time && this->do_complete_store(x);
+  const auto complete_id = std::empty(ROB) ? std::numeric_limits<uint64_t>::max() 
+                                            : ROB.front().instr_id;
+  
+  // Helper: Check if store depends on unverified predictions
+  auto is_safe_to_complete = [this](const LSQ_ENTRY& sq_entry) {
+    // Find corresponding ROB entry
+    auto rob_it = std::find_if(std::begin(ROB), std::end(ROB),
+                               ooo_model_instr::matches_id(sq_entry.instr_id));
+    
+    if (rob_it == std::end(ROB)) return true;
+
+    // Check if any source register comes from an unverified prediction
+    for (auto src_reg : rob_it->source_registers) {
+      // Walk backwards in ROB to find producer
+      for (auto prod_it = std::begin(ROB); prod_it != rob_it; ++prod_it) {
+        for (auto dest_reg : prod_it->destination_registers) {
+          if (src_reg == dest_reg && prod_it->value_predicted) {
+            // Check if prediction has been verified
+            if (!prod_it->prediction_correct) {
+              // This store depends on an unverified prediction!
+              if constexpr (champsim::debug_print) {
+                fmt::print("[LVP] Blocking store instr_id: {} (depends on unverified pred from {})\n",
+                           sq_entry.instr_id, prod_it->instr_id);
+              }
+              return false;
+            }
+          }
+        }
+      }
+    }
+    return true;
   };
 
-  auto unfetched_begin = std::partition_point(std::begin(SQ), std::end(SQ), [](const auto& x) { return x.fetch_issued; });
+  auto do_complete = [time = current_time, finished = LSQ_ENTRY::precedes(complete_id), 
+                      is_safe = is_safe_to_complete, this](const auto& x) {
+    return finished(x) && x.ready_time <= time && is_safe(x) && 
+           this->do_complete_store(x);
+  };
+
+  auto unfetched_begin = std::partition_point(std::begin(SQ), std::end(SQ), 
+                                              [](const auto& x) { return x.fetch_issued; });
   auto [fetch_begin, fetch_end] =
-      champsim::get_span_p(unfetched_begin, std::end(SQ), store_bw, [time = current_time](const auto& x) { return !x.fetch_issued && x.ready_time <= time; });
+      champsim::get_span_p(unfetched_begin, std::end(SQ), store_bw, 
+                           [time = current_time](const auto& x) { 
+                             return !x.fetch_issued && x.ready_time <= time; 
+                           });
   store_bw.consume(std::distance(fetch_begin, fetch_end));
   std::for_each(fetch_begin, fetch_end, [time = current_time, this](auto& sq_entry) {
     this->do_finish_store(sq_entry);
@@ -598,40 +645,40 @@ long O3_CPU::operate_lsq()
     sq_entry.ready_time = time;
   });
 
-  auto [complete_begin, complete_end] = champsim::get_span_p(std::cbegin(SQ), std::cend(SQ), store_bw, do_complete);
+  auto [complete_begin, complete_end] = champsim::get_span_p(std::cbegin(SQ), std::cend(SQ), 
+                                                              store_bw, do_complete);
   store_bw.consume(std::distance(complete_begin, complete_end));
   SQ.erase(complete_begin, complete_end);
 
-  // *** ADD THIS SECTION FOR VALUE PREDICTION ***
-  // Make value predictions for loads in the LQ
+  // *** VALUE PREDICTION: Make predictions for loads in LQ ***
   for (auto& lq_entry : LQ) {
     if (lq_entry.has_value() && !lq_entry->fetch_issued) {
       // Find the corresponding ROB entry
       auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), 
                                  ooo_model_instr::matches_id(lq_entry->instr_id));
-      
+
       if (rob_it != std::end(ROB) && !rob_it->value_predicted) {
         // Try to predict the value
         uint64_t predicted_val;
         if (lvp.predict(lq_entry->ip.to<uint64_t>(), predicted_val)) {
           rob_it->predicted_value = predicted_val;
           rob_it->value_predicted = true;
-          
+
           if constexpr (champsim::debug_print) {
             fmt::print("[LVP] PREDICT instr_id: {} ip: {} predicted: {:#x}\n", 
-                      rob_it->instr_id, rob_it->ip, predicted_val);
+                       rob_it->instr_id, rob_it->ip, predicted_val);
           }
         }
       }
     }
   }
-  // *** END VALUE PREDICTION SECTION ***
 
   champsim::bandwidth load_bw{LQ_WIDTH};
 
   for (auto& lq_entry : LQ) {
-    if (load_bw.has_remaining() && lq_entry.has_value() && lq_entry->producer_id == std::numeric_limits<uint64_t>::max() && !lq_entry->fetch_issued
-        && lq_entry->ready_time < current_time) {
+    if (load_bw.has_remaining() && lq_entry.has_value() && 
+        lq_entry->producer_id == std::numeric_limits<uint64_t>::max() && 
+        !lq_entry->fetch_issued && lq_entry->ready_time < current_time) {
       auto success = execute_load(*lq_entry);
       if (success) {
         load_bw.consume();
@@ -721,13 +768,18 @@ long O3_CPU::handle_memory_return()
 {
   long progress{0};
 
+  // Handle I-cache returns (unchanged)
   for (champsim::bandwidth fetch_bw{FETCH_WIDTH}, l1i_bw{L1I_BANDWIDTH};
-       fetch_bw.has_remaining() && l1i_bw.has_remaining() && !L1I_bus.lower_level->returned.empty(); l1i_bw.consume()) {
+       fetch_bw.has_remaining() && l1i_bw.has_remaining() && !L1I_bus.lower_level->returned.empty(); 
+       l1i_bw.consume()) {
     auto& l1i_entry = L1I_bus.lower_level->returned.front();
 
     while (fetch_bw.has_remaining() && !l1i_entry.instr_depend_on_me.empty()) {
-      auto fetched = std::find_if(std::begin(IFETCH_BUFFER), std::end(IFETCH_BUFFER), ooo_model_instr::matches_id(l1i_entry.instr_depend_on_me.front()));
-      if (fetched != std::end(IFETCH_BUFFER) && champsim::block_number{fetched->ip} == champsim::block_number{l1i_entry.v_address} && fetched->fetch_issued) {
+      auto fetched = std::find_if(std::begin(IFETCH_BUFFER), std::end(IFETCH_BUFFER), 
+                                  ooo_model_instr::matches_id(l1i_entry.instr_depend_on_me.front()));
+      if (fetched != std::end(IFETCH_BUFFER) && 
+          champsim::block_number{fetched->ip} == champsim::block_number{l1i_entry.v_address} && 
+          fetched->fetch_issued) {
         fetched->fetch_completed = true;
         fetch_bw.consume();
         ++progress;
@@ -746,16 +798,24 @@ long O3_CPU::handle_memory_return()
     }
   }
 
+  // Handle D-cache returns with VALUE PREDICTION VERIFICATION
   auto l1d_it = std::begin(L1D_bus.lower_level->returned);
-  for (champsim::bandwidth l1d_bw{L1D_BANDWIDTH}; l1d_bw.has_remaining() && l1d_it != std::end(L1D_bus.lower_level->returned); l1d_bw.consume(), ++l1d_it) {
+  for (champsim::bandwidth l1d_bw{L1D_BANDWIDTH}; 
+       l1d_bw.has_remaining() && l1d_it != std::end(L1D_bus.lower_level->returned); 
+       l1d_bw.consume(), ++l1d_it) {
+    
     for (auto& lq_entry : LQ) {
-      if (lq_entry.has_value() && lq_entry->fetch_issued && champsim::block_number{lq_entry->virtual_address} == champsim::block_number{l1d_it->v_address}) {
+      if (lq_entry.has_value() && lq_entry->fetch_issued && 
+          champsim::block_number{lq_entry->virtual_address} == 
+          champsim::block_number{l1d_it->v_address}) {
 
-        // *** MODIFIED: VALUE PREDICTION VERIFICATION WITH SQUASHING ***
-        auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), ooo_model_instr::matches_id(lq_entry->instr_id));
+        // *** VALUE PREDICTION VERIFICATION ***
+        auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), 
+                                   ooo_model_instr::matches_id(lq_entry->instr_id));
 
         if (rob_it != std::end(ROB)) {
-          // In a real implementation, extract the actual loaded value from the cache line
+          // Extract actual loaded value
+          // NOTE: In a real implementation, you'd extract the actual data from the cache line
           // For this example, we use the address as a proxy for the value
           uint64_t actual_value = lq_entry->virtual_address.to<uint64_t>();
 
@@ -768,25 +828,31 @@ long O3_CPU::handle_memory_return()
             lvp.update(lq_entry->ip.to<uint64_t>(), actual_value, correct);
 
             if (!correct) {
-              // *** SQUASH DEPENDENT INSTRUCTIONS ***
-              //if constexpr (champsim::debug_print) {
+              // *** MISPREDICTION DETECTED - SQUASH! ***
+              if constexpr (champsim::debug_print) {
                 fmt::print("[LVP] MISPREDICT instr_id: {} ip: {} predicted: {:#x} actual: {:#x}\n", 
-                           rob_it->instr_id, rob_it->ip, rob_it->predicted_value, actual_value);
-              //}
+                           rob_it->instr_id, rob_it->ip, 
+                           rob_it->predicted_value, actual_value);
+              }
 
-              // Update the instruction with correct value
+              // Update with actual value
               rob_it->predicted_value = actual_value;
               
               // Squash all dependent instructions
+              // The mispredicted instruction will re-execute and forward correct value
               squash_value_misprediction(*rob_it);
+              
+              // IMPORTANT: Do NOT call complete_dest_register here!
+              // It will happen naturally when the instruction re-executes
+              
             } else {
-              //if constexpr (champsim::debug_print) {
+              if constexpr (champsim::debug_print) {
                 fmt::print("[LVP] CORRECT instr_id: {} ip: {} value: {:#x}\n", 
                            rob_it->instr_id, rob_it->ip, actual_value);
-              //}
+              }
             }
           } else {
-            // No prediction was made, just update the predictor for next time
+            // No prediction was made, just update the predictor for learning
             lvp.update(lq_entry->ip.to<uint64_t>(), actual_value, false);
           }
         }
@@ -799,28 +865,35 @@ long O3_CPU::handle_memory_return()
     }
     ++progress;
   }
+  
   L1D_bus.lower_level->returned.erase(std::begin(L1D_bus.lower_level->returned), l1d_it);
-
   return progress;
 }
 
 long O3_CPU::retire_rob()
 {
   auto [retire_begin, retire_end] =
-      champsim::get_span_p(std::cbegin(ROB), std::cend(ROB), champsim::bandwidth{RETIRE_WIDTH}, [](const auto& x) { return x.completed; });
-  assert(std::distance(retire_begin, retire_end) >= 0); // end succeeds begin
+      champsim::get_span_p(std::cbegin(ROB), std::cend(ROB), 
+                          champsim::bandwidth{RETIRE_WIDTH}, 
+                          [](const auto& x) { return x.completed; });
+  
+  assert(std::distance(retire_begin, retire_end) >= 0);
+  
   if constexpr (champsim::debug_print) {
-    std::for_each(retire_begin, retire_end, [cycle = current_time.time_since_epoch() / clock_period](const auto& x) {
+    std::for_each(retire_begin, retire_end, 
+                 [cycle = current_time.time_since_epoch() / clock_period](const auto& x) {
       fmt::print("[ROB] retire_rob instr_id: {} is retired cycle: {}\n", x.instr_id, cycle);
     });
   }
 
-  // commit register writes to backend RAT
-  // and recycle the old physical registers
+  // Commit register writes to backend RAT and recycle old physical registers
   for (auto rob_it = retire_begin; rob_it != retire_end; ++rob_it) {
     for (auto dreg : rob_it->destination_registers) {
       reg_allocator.retire_dest_register(dreg);
     }
+    
+    // *** NEW: Clear rename history (no longer need to rollback after retirement) ***
+    reg_allocator.retire_rename(rob_it->instr_id);
   }
 
   auto retire_count = std::distance(retire_begin, retire_end);
@@ -950,80 +1023,133 @@ bool CacheBus::issue_write(request_type data_packet)
 
 void O3_CPU::squash_value_misprediction(ooo_model_instr& mispredicted_instr)
 {
-  //if constexpr (champsim::debug_print) {
-    fmt::print("[LVP] SQUASH instr_id: {} ip: {}\n", mispredicted_instr.instr_id, mispredicted_instr.ip);
-  //}
+  if constexpr (champsim::debug_print) {
+    fmt::print("[LVP] SQUASH instr_id: {} ip: {}\n", 
+               mispredicted_instr.instr_id, mispredicted_instr.ip);
+  }
 
   lvp.squashes++;
 
-  // Find all instructions in ROB that depend on the mispredicted value
-  // We need to walk forward from the mispredicted instruction
-  bool found_mispredict = false;
+  // ==========================================
+  // STEP 1: Handle the mispredicted instruction itself (I_mis)
+  // ==========================================
   
-  for (auto& rob_entry : ROB) {
+  // The mispredicted instruction used a predicted value but now has the actual value
+  // It needs to re-execute to forward the correct value to its dependents
+  
+  mispredicted_instr.executed = false;
+  mispredicted_instr.completed = false;
+  mispredicted_instr.value_predicted = false;  // Clear prediction flag
+  mispredicted_instr.ready_time = current_time + EXEC_LATENCY;
+
+  if constexpr (champsim::debug_print) {
+    fmt::print("[LVP] Marked I_mis (instr_id: {}) for re-execution\n", 
+               mispredicted_instr.instr_id);
+  }
+
+  // ==========================================
+  // STEP 2: Squash ALL younger instructions in ROB
+  // ==========================================
+  // Unlike branch misprediction, we don't flush the ROB completely.
+  // We keep the instructions but reset their state so they can re-execute
+  // with the correct value once the mispredicted instruction completes.
+  
+  bool found_mispredict = false;
+  std::vector<uint64_t> squashed_ids;  // Track for statistics/debugging
+  
+  for (auto rob_it = std::begin(ROB); rob_it != std::end(ROB); ++rob_it) {
     // Skip until we find the mispredicted instruction
     if (!found_mispredict) {
-      if (rob_entry.instr_id == mispredicted_instr.instr_id) {
+      if (rob_it->instr_id == mispredicted_instr.instr_id) {
         found_mispredict = true;
       }
-      continue;
+      continue;  // Skip the mispredicted instruction itself (already handled above)
     }
 
-    // Now we're looking at younger instructions
-    // Check if this instruction depends on the mispredicted one
-    bool is_dependent = false;
+    // Squash ALL younger instructions (not just direct dependents)
+    // This prevents the register file from being completely occupied
+    squashed_ids.push_back(rob_it->instr_id);
+
+    if constexpr (champsim::debug_print) {
+      fmt::print("[LVP] SQUASH younger instr_id: {}\n", rob_it->instr_id);
+    }
+
+    // ==========================================
+    // STEP 2A: Rollback Register Allocation
+    // ==========================================
     
-    // Check register dependencies
-    for (auto src_reg : rob_entry.source_registers) {
-      for (auto dest_reg : mispredicted_instr.destination_registers) {
-        // In a real implementation, you'd check if the architectural register matches
-        // For now, we'll use a simplified check
-        if (src_reg == dest_reg) {
-          is_dependent = true;
-          break;
+    // Undo the register renaming if this instruction was scheduled
+    if (rob_it->scheduled) {
+      reg_allocator.undo_rename(rob_it->instr_id);
+    }
+
+    // ==========================================
+    // STEP 2B: Clear Pipeline State
+    // ==========================================
+    
+    // Mark instruction as needing to go through the pipeline again
+    rob_it->scheduled = false;   // Must re-schedule (will re-rename)
+    rob_it->executed = false;    // Must re-execute
+    rob_it->completed = false;   // Cannot retire yet
+    
+    // Reset ready time so it waits for dependencies
+    rob_it->ready_time = current_time + SCHEDULING_LATENCY;
+
+    // ==========================================
+    // STEP 2C: Clear Any Chained Predictions
+    // ==========================================
+    
+    // Clear any value predictions
+    if (rob_it->value_predicted) {
+      rob_it->value_predicted = false;
+      rob_it->predicted_value = 0;
+      
+      if constexpr (champsim::debug_print) {
+        fmt::print("[LVP] Cleared prediction for instr_id: {}\n", 
+                   rob_it->instr_id);
+      }
+    }
+
+    // ==========================================
+    // STEP 2D: Handle Memory Operations (LSQ)
+    // ==========================================
+    
+    // CRITICAL FIX: Reset completed_mem_ops counter
+    rob_it->completed_mem_ops = 0;
+    
+    // Handle LQ entries
+    for (auto& lq_entry : LQ) {
+      if (lq_entry.has_value() && lq_entry->instr_id == rob_it->instr_id) {
+        if (lq_entry->fetch_issued) {
+          lq_entry->fetch_issued = false;
+          lq_entry->ready_time = current_time + EXEC_LATENCY;
+          
+          if constexpr (champsim::debug_print) {
+            fmt::print("[LVP] Invalidated load instr_id: {}\n", rob_it->instr_id);
+          }
         }
       }
-      if (is_dependent) break;
     }
 
-    // If dependent, squash this instruction
-    if (is_dependent) {
-      //if constexpr (champsim::debug_print) {
-        fmt::print("[LVP] SQUASH dependent instr_id: {} (depends on {})\n", 
-                   rob_entry.instr_id, mispredicted_instr.instr_id);
-      //}
-
-      // Mark instruction for re-execution
-      if (rob_entry.executed) {
-        rob_entry.executed = false;
-        rob_entry.ready_time = current_time + EXEC_LATENCY;
-      }
-      
-      // Mark as incomplete
-      if (rob_entry.completed) {
-        rob_entry.completed = false;
-      }
-
-      // Invalidate register outputs
-      for (auto dreg : rob_entry.destination_registers) {
-        // Mark the physical register as invalid, forcing dependents to wait
-        // The register allocator will handle the validity bits
-        //if constexpr (champsim::debug_print) {
-          fmt::print("[LVP] Invalidating register for instr_id: {}\n", rob_entry.instr_id);
-        //}
-      }
-
-      // Clear any value prediction this instruction had
-      if (rob_entry.value_predicted) {
-        rob_entry.value_predicted = false;
-        rob_entry.predicted_value = 0;
+    // Handle SQ entries
+    for (auto& sq_entry : SQ) {
+      if (sq_entry.instr_id == rob_it->instr_id) {
+        if (sq_entry.fetch_issued) {
+          sq_entry.fetch_issued = false;
+          sq_entry.ready_time = current_time + EXEC_LATENCY;
+          
+          if constexpr (champsim::debug_print) {
+            fmt::print("[LVP] Invalidated store instr_id: {}\n", rob_it->instr_id);
+          }
+        }
       }
     }
   }
 
-  // The mispredicted instruction itself needs to forward the correct value now
-  // Mark its destination registers as valid with the correct value
-  for (auto dreg : mispredicted_instr.destination_registers) {
-    reg_allocator.complete_dest_register(dreg);
+  if constexpr (champsim::debug_print) {
+    fmt::print("[LVP] Squashed {} younger instructions\n", squashed_ids.size());
   }
+  
+  // Track how many instructions were squashed
+  lvp.dependents_squashed += squashed_ids.size();
 }

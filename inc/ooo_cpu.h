@@ -98,6 +98,7 @@ struct LastValuePredictor {
   uint64_t squashes = 0;
   uint64_t evictions = 0; // Track how many entries were evicted
   uint64_t early_executions = 0;  // Loads that executed with prediction
+  uint64_t dependents_squashed = 0;
   
   // Predict value for a given PC
   bool predict(uint64_t pc, uint64_t& predicted_value) {
