@@ -107,7 +107,6 @@ void O3_CPU::end_phase(unsigned finished_cpu)
     fmt::print("\n");
     lvp.print_stats();
     // *** END ADDITION ***
-    
   }
 }
 
@@ -476,10 +475,10 @@ long O3_CPU::execute_instruction()
   champsim::bandwidth exec_bw{EXEC_WIDTH};
   for (auto rob_it = std::begin(ROB); rob_it != std::end(ROB) && exec_bw.has_remaining(); ++rob_it) {
     if (rob_it->scheduled && !rob_it->executed && rob_it->ready_time <= current_time) {
-      
+
       // *** MODIFIED: Check dependencies with value prediction support ***
       bool ready;
-      
+
       // For loads with value predictions, we can execute even if dependent registers aren't ready
       // The predicted value will be forwarded to dependent instructions
       if (rob_it->value_predicted && !rob_it->source_memory.empty()) {
@@ -487,19 +486,16 @@ long O3_CPU::execute_instruction()
         // (In reality, loads typically don't have register destinations to predict,
         //  but rather the *loaded value* is what we predict)
         ready = true; // Allow execution with prediction
-        
+
         if constexpr (champsim::debug_print) {
-          fmt::print("[LVP] EXECUTE with prediction instr_id: {} ip: {}\n", 
-                    rob_it->instr_id, rob_it->ip);
+          fmt::print("[LVP] EXECUTE with prediction instr_id: {} ip: {}\n", rob_it->instr_id, rob_it->ip);
         }
       } else {
         // Normal execution: all source registers must be ready
         ready = std::all_of(std::begin(rob_it->source_registers), std::end(rob_it->source_registers),
-                           [&alloc = std::as_const(reg_allocator)](auto srcreg) { 
-                             return alloc.isValid(srcreg); 
-                           });
+                            [&alloc = std::as_const(reg_allocator)](auto srcreg) { return alloc.isValid(srcreg); });
       }
-      
+
       if (ready) {
         do_execution(*rob_it);
         exec_bw.consume();
@@ -524,8 +520,7 @@ void O3_CPU::do_execution(ooo_model_instr& instr)
     }
     lvp.early_executions++;
     if constexpr (champsim::debug_print) {
-      fmt::print("[LVP] FORWARD predicted value instr_id: {} ip: {}\n", 
-                instr.instr_id, instr.ip);
+      fmt::print("[LVP] FORWARD predicted value instr_id: {} ip: {}\n", instr.instr_id, instr.ip);
     }
   }
 
@@ -547,7 +542,6 @@ void O3_CPU::do_execution(ooo_model_instr& instr)
     fmt::print("[ROB] {} instr_id: {} ready_time: {}\n", __func__, instr.instr_id, instr.ready_time.time_since_epoch() / clock_period);
   }
 }
-
 
 void O3_CPU::do_memory_scheduling(ooo_model_instr& instr)
 {
@@ -616,19 +610,17 @@ long O3_CPU::operate_lsq()
   for (auto& lq_entry : LQ) {
     if (lq_entry.has_value() && !lq_entry->fetch_issued) {
       // Find the corresponding ROB entry
-      auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), 
-                                 ooo_model_instr::matches_id(lq_entry->instr_id));
-      
+      auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), ooo_model_instr::matches_id(lq_entry->instr_id));
+
       if (rob_it != std::end(ROB) && !rob_it->value_predicted) {
         // Try to predict the value
         uint64_t predicted_val;
         if (lvp.predict(lq_entry->ip.to<uint64_t>(), predicted_val)) {
           rob_it->predicted_value = predicted_val;
           rob_it->value_predicted = true;
-          
+
           if constexpr (champsim::debug_print) {
-            fmt::print("[LVP] PREDICT instr_id: {} ip: {} predicted: {:#x}\n", 
-                      rob_it->instr_id, rob_it->ip, predicted_val);
+            fmt::print("[LVP] PREDICT instr_id: {} ip: {} predicted: {:#x}\n", rob_it->instr_id, rob_it->ip, predicted_val);
           }
         }
       }
@@ -760,28 +752,27 @@ long O3_CPU::handle_memory_return()
   for (champsim::bandwidth l1d_bw{L1D_BANDWIDTH}; l1d_bw.has_remaining() && l1d_it != std::end(L1D_bus.lower_level->returned); l1d_bw.consume(), ++l1d_it) {
     for (auto& lq_entry : LQ) {
       if (lq_entry.has_value() && lq_entry->fetch_issued && champsim::block_number{lq_entry->virtual_address} == champsim::block_number{l1d_it->v_address}) {
-        
+
         // *** ADD VALUE PREDICTION VERIFICATION ***
         // Find the corresponding ROB entry to verify prediction
-        auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), 
-                                   ooo_model_instr::matches_id(lq_entry->instr_id));
-        
+        auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), ooo_model_instr::matches_id(lq_entry->instr_id));
+
         if (rob_it != std::end(ROB)) {
           // For this simple implementation, we'll use the address as a proxy for the value
           // In a real implementation, you'd extract the actual loaded data from the cache line
           uint64_t actual_value = lq_entry->virtual_address.to<uint64_t>();
-          
+
           if (rob_it->value_predicted) {
             // Check if prediction was correct
             bool correct = (rob_it->predicted_value == actual_value);
             rob_it->prediction_correct = correct;
-            
+
             // Update the predictor
             lvp.update(lq_entry->ip.to<uint64_t>(), actual_value, correct);
-            
+
             if constexpr (champsim::debug_print) {
-              fmt::print("[LVP] VERIFY instr_id: {} ip: {} predicted: {:#x} actual: {:#x} correct: {}\n", 
-                        rob_it->instr_id, rob_it->ip, rob_it->predicted_value, actual_value, correct);
+              fmt::print("[LVP] VERIFY instr_id: {} ip: {} predicted: {:#x} actual: {:#x} correct: {}\n", rob_it->instr_id, rob_it->ip, rob_it->predicted_value,
+                         actual_value, correct);
             }
           } else {
             // First time seeing this PC, just update the predictor
@@ -789,7 +780,7 @@ long O3_CPU::handle_memory_return()
           }
         }
         // *** END VALUE PREDICTION VERIFICATION ***
-        
+
         lq_entry->finish(std::begin(ROB), std::end(ROB));
         lq_entry.reset();
         ++progress;
