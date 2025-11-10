@@ -7,415 +7,77 @@ Number of CPUs: 1
 Page size: 4096
 
 Off-chip DRAM Size: 16 GiB Channels: 1 Width: 64-bit Data Rate: 3205 MT/s
-DEADLOCK! CPU 0 cycle 3562
-[cpu0_IFETCH] entry:   0 instr_id: 1090 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2629
-[cpu0_IFETCH] entry:   1 instr_id: 1091 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2629
-[cpu0_IFETCH] entry:   2 instr_id: 1092 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2629
-[cpu0_IFETCH] entry:   3 instr_id: 1093 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2629
-[cpu0_IFETCH] entry:   4 instr_id: 1094 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2629
-[cpu0_IFETCH] entry:   5 instr_id: 1095 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2629
-[cpu0_IFETCH] entry:   6 instr_id: 1096 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2630
-[cpu0_IFETCH] entry:   7 instr_id: 1097 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2630
-[cpu0_IFETCH] entry:   8 instr_id: 1098 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2630
-[cpu0_IFETCH] entry:   9 instr_id: 1099 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2630
-[cpu0_IFETCH] entry:  10 instr_id: 1100 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2630
-[cpu0_IFETCH] entry:  11 instr_id: 1101 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2630
-[cpu0_IFETCH] entry:  12 instr_id: 1102 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2631
-[cpu0_IFETCH] entry:  13 instr_id: 1103 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2631
-[cpu0_IFETCH] entry:  14 instr_id: 1104 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2631
-[cpu0_IFETCH] entry:  15 instr_id: 1105 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2631
-[cpu0_IFETCH] entry:  16 instr_id: 1106 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2631
-[cpu0_IFETCH] entry:  17 instr_id: 1107 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2631
-[cpu0_IFETCH] entry:  18 instr_id: 1108 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2632
-[cpu0_IFETCH] entry:  19 instr_id: 1109 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2632
-[cpu0_IFETCH] entry:  20 instr_id: 1110 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2632
-[cpu0_IFETCH] entry:  21 instr_id: 1111 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2632
-[cpu0_IFETCH] entry:  22 instr_id: 1112 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2632
-[cpu0_IFETCH] entry:  23 instr_id: 1113 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2632
-[cpu0_IFETCH] entry:  24 instr_id: 1114 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2633
-[cpu0_IFETCH] entry:  25 instr_id: 1115 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2633
-[cpu0_IFETCH] entry:  26 instr_id: 1116 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2633
-[cpu0_IFETCH] entry:  27 instr_id: 1117 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2633
-[cpu0_IFETCH] entry:  28 instr_id: 1118 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2633
-[cpu0_IFETCH] entry:  29 instr_id: 1119 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2633
-[cpu0_IFETCH] entry:  30 instr_id: 1120 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2634
-[cpu0_IFETCH] entry:  31 instr_id: 1121 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2634
-[cpu0_IFETCH] entry:  32 instr_id: 1122 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2634
-[cpu0_IFETCH] entry:  33 instr_id: 1123 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2634
-[cpu0_IFETCH] entry:  34 instr_id: 1124 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2634
-[cpu0_IFETCH] entry:  35 instr_id: 1125 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2634
-[cpu0_IFETCH] entry:  36 instr_id: 1126 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2635
-[cpu0_IFETCH] entry:  37 instr_id: 1127 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2635
-[cpu0_IFETCH] entry:  38 instr_id: 1128 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2635
-[cpu0_IFETCH] entry:  39 instr_id: 1129 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2635
-[cpu0_IFETCH] entry:  40 instr_id: 1130 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2635
-[cpu0_IFETCH] entry:  41 instr_id: 1131 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2635
-[cpu0_IFETCH] entry:  42 instr_id: 1132 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2636
-[cpu0_IFETCH] entry:  43 instr_id: 1133 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2636
-[cpu0_IFETCH] entry:  44 instr_id: 1134 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2636
-[cpu0_IFETCH] entry:  45 instr_id: 1135 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2636
-[cpu0_IFETCH] entry:  46 instr_id: 1136 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2636
-[cpu0_IFETCH] entry:  47 instr_id: 1137 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2636
-[cpu0_IFETCH] entry:  48 instr_id: 1138 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2637
-[cpu0_IFETCH] entry:  49 instr_id: 1139 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2637
-[cpu0_IFETCH] entry:  50 instr_id: 1140 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2637
-[cpu0_IFETCH] entry:  51 instr_id: 1141 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2637
-[cpu0_IFETCH] entry:  52 instr_id: 1142 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2637
-[cpu0_IFETCH] entry:  53 instr_id: 1143 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2637
-[cpu0_IFETCH] entry:  54 instr_id: 1144 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2638
-[cpu0_IFETCH] entry:  55 instr_id: 1145 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2638
-[cpu0_IFETCH] entry:  56 instr_id: 1146 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2638
-[cpu0_IFETCH] entry:  57 instr_id: 1147 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2638
-[cpu0_IFETCH] entry:  58 instr_id: 1148 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2638
-[cpu0_IFETCH] entry:  59 instr_id: 1149 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2638
-[cpu0_IFETCH] entry:  60 instr_id: 1150 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2639
-[cpu0_IFETCH] entry:  61 instr_id: 1151 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2640
-[cpu0_IFETCH] entry:  62 instr_id: 1152 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2640
-[cpu0_IFETCH] entry:  63 instr_id: 1153 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2640
+DEADLOCK! CPU 0 cycle 500
+[cpu0_IFETCH] entry:   0 instr_id: 0 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2
+[cpu0_IFETCH] entry:   1 instr_id: 1 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2
+[cpu0_IFETCH] entry:   2 instr_id: 2 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2
+[cpu0_IFETCH] entry:   3 instr_id: 3 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2
+[cpu0_IFETCH] entry:   4 instr_id: 4 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2
+[cpu0_IFETCH] entry:   5 instr_id: 5 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2
+[cpu0_IFETCH] entry:   6 instr_id: 6 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 3
+[cpu0_IFETCH] entry:   7 instr_id: 7 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 3
+[cpu0_IFETCH] entry:   8 instr_id: 8 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 3
+[cpu0_IFETCH] entry:   9 instr_id: 9 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 3
+[cpu0_IFETCH] entry:  10 instr_id: 10 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 3
+[cpu0_IFETCH] entry:  11 instr_id: 11 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 3
+[cpu0_IFETCH] entry:  12 instr_id: 12 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 4
+[cpu0_IFETCH] entry:  13 instr_id: 13 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 4
+[cpu0_IFETCH] entry:  14 instr_id: 14 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 4
+[cpu0_IFETCH] entry:  15 instr_id: 15 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 4
+[cpu0_IFETCH] entry:  16 instr_id: 16 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 4
+[cpu0_IFETCH] entry:  17 instr_id: 17 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 4
+[cpu0_IFETCH] entry:  18 instr_id: 18 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 5
+[cpu0_IFETCH] entry:  19 instr_id: 19 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 2 event: 5
+[cpu0_IFETCH] entry:  20 instr_id: 20 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 5
+[cpu0_IFETCH] entry:  21 instr_id: 21 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 5
+[cpu0_IFETCH] entry:  22 instr_id: 22 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 5
+[cpu0_IFETCH] entry:  23 instr_id: 23 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 5
+[cpu0_IFETCH] entry:  24 instr_id: 24 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 6
+[cpu0_IFETCH] entry:  25 instr_id: 25 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 6
+[cpu0_IFETCH] entry:  26 instr_id: 26 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 6
+[cpu0_IFETCH] entry:  27 instr_id: 27 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 6
+[cpu0_IFETCH] entry:  28 instr_id: 28 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 6
+[cpu0_IFETCH] entry:  29 instr_id: 29 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 6
+[cpu0_IFETCH] entry:  30 instr_id: 30 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 7
+[cpu0_IFETCH] entry:  31 instr_id: 31 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 7
+[cpu0_IFETCH] entry:  32 instr_id: 32 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 7
+[cpu0_IFETCH] entry:  33 instr_id: 33 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 7
+[cpu0_IFETCH] entry:  34 instr_id: 34 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 7
+[cpu0_IFETCH] entry:  35 instr_id: 35 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 7
+[cpu0_IFETCH] entry:  36 instr_id: 36 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 8
+[cpu0_IFETCH] entry:  37 instr_id: 37 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 8
+[cpu0_IFETCH] entry:  38 instr_id: 38 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 8
+[cpu0_IFETCH] entry:  39 instr_id: 39 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 8
+[cpu0_IFETCH] entry:  40 instr_id: 40 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 8
+[cpu0_IFETCH] entry:  41 instr_id: 41 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 8
+[cpu0_IFETCH] entry:  42 instr_id: 42 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 9
+[cpu0_IFETCH] entry:  43 instr_id: 43 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 9
+[cpu0_IFETCH] entry:  44 instr_id: 44 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 9
+[cpu0_IFETCH] entry:  45 instr_id: 45 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 9
+[cpu0_IFETCH] entry:  46 instr_id: 46 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 9
+[cpu0_IFETCH] entry:  47 instr_id: 47 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 9
+[cpu0_IFETCH] entry:  48 instr_id: 48 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 10
+[cpu0_IFETCH] entry:  49 instr_id: 49 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 10
+[cpu0_IFETCH] entry:  50 instr_id: 50 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 10
+[cpu0_IFETCH] entry:  51 instr_id: 51 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 10
+[cpu0_IFETCH] entry:  52 instr_id: 52 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 10
+[cpu0_IFETCH] entry:  53 instr_id: 53 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 10
+[cpu0_IFETCH] entry:  54 instr_id: 54 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 11
+[cpu0_IFETCH] entry:  55 instr_id: 55 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 11
+[cpu0_IFETCH] entry:  56 instr_id: 56 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 11
+[cpu0_IFETCH] entry:  57 instr_id: 57 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 11
+[cpu0_IFETCH] entry:  58 instr_id: 58 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 11
+[cpu0_IFETCH] entry:  59 instr_id: 59 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 11
+[cpu0_IFETCH] entry:  60 instr_id: 60 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 12
+[cpu0_IFETCH] entry:  61 instr_id: 61 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 12
+[cpu0_IFETCH] entry:  62 instr_id: 62 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 12
+[cpu0_IFETCH] entry:  63 instr_id: 63 fetch_issued: true fetch_completed: false scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 12
 
-[cpu0_DECODE] entry:   0 instr_id: 1058 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2627
-[cpu0_DECODE] entry:   1 instr_id: 1059 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2627
-[cpu0_DECODE] entry:   2 instr_id: 1060 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2627
-[cpu0_DECODE] entry:   3 instr_id: 1061 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2627
-[cpu0_DECODE] entry:   4 instr_id: 1062 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2627
-[cpu0_DECODE] entry:   5 instr_id: 1063 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2631
-[cpu0_DECODE] entry:   6 instr_id: 1064 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2631
-[cpu0_DECODE] entry:   7 instr_id: 1065 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2631
-[cpu0_DECODE] entry:   8 instr_id: 1066 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2631
-[cpu0_DECODE] entry:   9 instr_id: 1067 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2631
-[cpu0_DECODE] entry:  10 instr_id: 1068 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2631
-[cpu0_DECODE] entry:  11 instr_id: 1069 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2632
-[cpu0_DECODE] entry:  12 instr_id: 1070 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2632
-[cpu0_DECODE] entry:  13 instr_id: 1071 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2632
-[cpu0_DECODE] entry:  14 instr_id: 1072 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2634
-[cpu0_DECODE] entry:  15 instr_id: 1073 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2634
-[cpu0_DECODE] entry:  16 instr_id: 1074 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2634
-[cpu0_DECODE] entry:  17 instr_id: 1075 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2634
-[cpu0_DECODE] entry:  18 instr_id: 1076 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2634
-[cpu0_DECODE] entry:  19 instr_id: 1077 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2634
-[cpu0_DECODE] entry:  20 instr_id: 1078 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2635
-[cpu0_DECODE] entry:  21 instr_id: 1079 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2635
-[cpu0_DECODE] entry:  22 instr_id: 1080 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2635
-[cpu0_DECODE] entry:  23 instr_id: 1081 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2635
-[cpu0_DECODE] entry:  24 instr_id: 1082 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2635
-[cpu0_DECODE] entry:  25 instr_id: 1083 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2635
-[cpu0_DECODE] entry:  26 instr_id: 1084 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2636
-[cpu0_DECODE] entry:  27 instr_id: 1085 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2636
-[cpu0_DECODE] entry:  28 instr_id: 1086 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2636
-[cpu0_DECODE] entry:  29 instr_id: 1087 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2636
-[cpu0_DECODE] entry:  30 instr_id: 1088 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2636
-[cpu0_DECODE] entry:  31 instr_id: 1089 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2636
+cpu0_DECODE empty
 
-[cpu0_DISPATCH] entry:   0 instr_id: 1012 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2620
-[cpu0_DISPATCH] entry:   1 instr_id: 1013 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2620
-[cpu0_DISPATCH] entry:   2 instr_id: 1014 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2620
-[cpu0_DISPATCH] entry:   3 instr_id: 1015 fetch_issued: true fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2620
-[cpu0_DISPATCH] entry:   4 instr_id: 1016 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2621
-[cpu0_DISPATCH] entry:   5 instr_id: 1017 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2621
-[cpu0_DISPATCH] entry:   6 instr_id: 1018 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2621
-[cpu0_DISPATCH] entry:   7 instr_id: 1019 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2621
-[cpu0_DISPATCH] entry:   8 instr_id: 1020 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2621
-[cpu0_DISPATCH] entry:   9 instr_id: 1021 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2622
-[cpu0_DISPATCH] entry:  10 instr_id: 1022 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2622
-[cpu0_DISPATCH] entry:  11 instr_id: 1023 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2622
-[cpu0_DISPATCH] entry:  12 instr_id: 1024 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2622
-[cpu0_DISPATCH] entry:  13 instr_id: 1025 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2622
-[cpu0_DISPATCH] entry:  14 instr_id: 1026 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2623
-[cpu0_DISPATCH] entry:  15 instr_id: 1027 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2623
-[cpu0_DISPATCH] entry:  16 instr_id: 1028 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2623
-[cpu0_DISPATCH] entry:  17 instr_id: 1029 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2623
-[cpu0_DISPATCH] entry:  18 instr_id: 1030 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2623
-[cpu0_DISPATCH] entry:  19 instr_id: 1031 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2624
-[cpu0_DISPATCH] entry:  20 instr_id: 1032 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2624
-[cpu0_DISPATCH] entry:  21 instr_id: 1033 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2624
-[cpu0_DISPATCH] entry:  22 instr_id: 1034 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2624
-[cpu0_DISPATCH] entry:  23 instr_id: 1035 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2624
-[cpu0_DISPATCH] entry:  24 instr_id: 1036 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2625
-[cpu0_DISPATCH] entry:  25 instr_id: 1037 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2625
-[cpu0_DISPATCH] entry:  26 instr_id: 1038 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2625
-[cpu0_DISPATCH] entry:  27 instr_id: 1039 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2625
-[cpu0_DISPATCH] entry:  28 instr_id: 1040 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2625
-[cpu0_DISPATCH] entry:  29 instr_id: 1041 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2626
-[cpu0_DISPATCH] entry:  30 instr_id: 1042 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2626
-[cpu0_DISPATCH] entry:  31 instr_id: 1043 fetch_issued: false fetch_completed: true scheduled: false executed: false completed: false num_reg_dependent: 0 num_mem_ops: 0 event: 2626
+cpu0_DISPATCH empty
 
-[cpu0_ROB] entry:   0 instr_id: 735 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2635
-[cpu0_ROB] entry:   1 instr_id: 736 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2635
-[cpu0_ROB] entry:   2 instr_id: 737 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2636
-[cpu0_ROB] entry:   3 instr_id: 738 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2636
-[cpu0_ROB] entry:   4 instr_id: 739 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2636
-[cpu0_ROB] entry:   5 instr_id: 740 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2636
-[cpu0_ROB] entry:   6 instr_id: 741 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2637
-[cpu0_ROB] entry:   7 instr_id: 742 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2637
-[cpu0_ROB] entry:   8 instr_id: 743 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2637
-[cpu0_ROB] entry:   9 instr_id: 744 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2637
-[cpu0_ROB] entry:  10 instr_id: 745 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2638
-[cpu0_ROB] entry:  11 instr_id: 746 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2638
-[cpu0_ROB] entry:  12 instr_id: 747 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2638
-[cpu0_ROB] entry:  13 instr_id: 748 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2638
-[cpu0_ROB] entry:  14 instr_id: 749 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2639
-[cpu0_ROB] entry:  15 instr_id: 750 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2639
-[cpu0_ROB] entry:  16 instr_id: 751 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2639
-[cpu0_ROB] entry:  17 instr_id: 752 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2639
-[cpu0_ROB] entry:  18 instr_id: 753 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2640
-[cpu0_ROB] entry:  19 instr_id: 754 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2640
-[cpu0_ROB] entry:  20 instr_id: 755 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2640
-[cpu0_ROB] entry:  21 instr_id: 756 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2640
-[cpu0_ROB] entry:  22 instr_id: 757 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2641
-[cpu0_ROB] entry:  23 instr_id: 758 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2641
-[cpu0_ROB] entry:  24 instr_id: 759 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2641
-[cpu0_ROB] entry:  25 instr_id: 760 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2641
-[cpu0_ROB] entry:  26 instr_id: 761 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2642
-[cpu0_ROB] entry:  27 instr_id: 762 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2642
-[cpu0_ROB] entry:  28 instr_id: 763 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2642
-[cpu0_ROB] entry:  29 instr_id: 764 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2642
-[cpu0_ROB] entry:  30 instr_id: 765 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2643
-[cpu0_ROB] entry:  31 instr_id: 766 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2643
-[cpu0_ROB] entry:  32 instr_id: 767 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2643
-[cpu0_ROB] entry:  33 instr_id: 768 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2643
-[cpu0_ROB] entry:  34 instr_id: 769 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2644
-[cpu0_ROB] entry:  35 instr_id: 770 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2644
-[cpu0_ROB] entry:  36 instr_id: 771 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2644
-[cpu0_ROB] entry:  37 instr_id: 772 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2644
-[cpu0_ROB] entry:  38 instr_id: 773 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2645
-[cpu0_ROB] entry:  39 instr_id: 774 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2645
-[cpu0_ROB] entry:  40 instr_id: 775 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2645
-[cpu0_ROB] entry:  41 instr_id: 776 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2645
-[cpu0_ROB] entry:  42 instr_id: 777 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2646
-[cpu0_ROB] entry:  43 instr_id: 778 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2646
-[cpu0_ROB] entry:  44 instr_id: 779 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2646
-[cpu0_ROB] entry:  45 instr_id: 780 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2646
-[cpu0_ROB] entry:  46 instr_id: 781 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2647
-[cpu0_ROB] entry:  47 instr_id: 782 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2647
-[cpu0_ROB] entry:  48 instr_id: 783 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2647
-[cpu0_ROB] entry:  49 instr_id: 784 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2647
-[cpu0_ROB] entry:  50 instr_id: 785 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2648
-[cpu0_ROB] entry:  51 instr_id: 786 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2648
-[cpu0_ROB] entry:  52 instr_id: 787 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2648
-[cpu0_ROB] entry:  53 instr_id: 788 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2648
-[cpu0_ROB] entry:  54 instr_id: 789 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2649
-[cpu0_ROB] entry:  55 instr_id: 790 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2649
-[cpu0_ROB] entry:  56 instr_id: 791 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2649
-[cpu0_ROB] entry:  57 instr_id: 792 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2649
-[cpu0_ROB] entry:  58 instr_id: 793 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2650
-[cpu0_ROB] entry:  59 instr_id: 794 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2650
-[cpu0_ROB] entry:  60 instr_id: 795 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2650
-[cpu0_ROB] entry:  61 instr_id: 796 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2650
-[cpu0_ROB] entry:  62 instr_id: 797 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2651
-[cpu0_ROB] entry:  63 instr_id: 798 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2651
-[cpu0_ROB] entry:  64 instr_id: 799 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2651
-[cpu0_ROB] entry:  65 instr_id: 800 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2651
-[cpu0_ROB] entry:  66 instr_id: 801 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2652
-[cpu0_ROB] entry:  67 instr_id: 802 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2652
-[cpu0_ROB] entry:  68 instr_id: 803 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2652
-[cpu0_ROB] entry:  69 instr_id: 804 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2652
-[cpu0_ROB] entry:  70 instr_id: 805 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2653
-[cpu0_ROB] entry:  71 instr_id: 806 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2653
-[cpu0_ROB] entry:  72 instr_id: 807 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2653
-[cpu0_ROB] entry:  73 instr_id: 808 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2653
-[cpu0_ROB] entry:  74 instr_id: 809 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2654
-[cpu0_ROB] entry:  75 instr_id: 810 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2654
-[cpu0_ROB] entry:  76 instr_id: 811 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2654
-[cpu0_ROB] entry:  77 instr_id: 812 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2654
-[cpu0_ROB] entry:  78 instr_id: 813 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2655
-[cpu0_ROB] entry:  79 instr_id: 814 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2655
-[cpu0_ROB] entry:  80 instr_id: 815 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2655
-[cpu0_ROB] entry:  81 instr_id: 816 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2655
-[cpu0_ROB] entry:  82 instr_id: 817 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2656
-[cpu0_ROB] entry:  83 instr_id: 818 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2656
-[cpu0_ROB] entry:  84 instr_id: 819 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2656
-[cpu0_ROB] entry:  85 instr_id: 820 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2656
-[cpu0_ROB] entry:  86 instr_id: 821 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2657
-[cpu0_ROB] entry:  87 instr_id: 822 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2657
-[cpu0_ROB] entry:  88 instr_id: 823 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2657
-[cpu0_ROB] entry:  89 instr_id: 824 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2657
-[cpu0_ROB] entry:  90 instr_id: 825 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2658
-[cpu0_ROB] entry:  91 instr_id: 826 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2658
-[cpu0_ROB] entry:  92 instr_id: 827 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2658
-[cpu0_ROB] entry:  93 instr_id: 828 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2658
-[cpu0_ROB] entry:  94 instr_id: 829 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2659
-[cpu0_ROB] entry:  95 instr_id: 830 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2659
-[cpu0_ROB] entry:  96 instr_id: 831 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2659
-[cpu0_ROB] entry:  97 instr_id: 832 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2659
-[cpu0_ROB] entry:  98 instr_id: 833 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2660
-[cpu0_ROB] entry:  99 instr_id: 834 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2660
-[cpu0_ROB] entry: 100 instr_id: 835 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2660
-[cpu0_ROB] entry: 101 instr_id: 836 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2660
-[cpu0_ROB] entry: 102 instr_id: 837 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2661
-[cpu0_ROB] entry: 103 instr_id: 838 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2661
-[cpu0_ROB] entry: 104 instr_id: 839 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2661
-[cpu0_ROB] entry: 105 instr_id: 840 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2661
-[cpu0_ROB] entry: 106 instr_id: 841 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2662
-[cpu0_ROB] entry: 107 instr_id: 842 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2662
-[cpu0_ROB] entry: 108 instr_id: 843 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2662
-[cpu0_ROB] entry: 109 instr_id: 844 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2662
-[cpu0_ROB] entry: 110 instr_id: 845 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2663
-[cpu0_ROB] entry: 111 instr_id: 846 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2663
-[cpu0_ROB] entry: 112 instr_id: 847 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2663
-[cpu0_ROB] entry: 113 instr_id: 848 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2663
-[cpu0_ROB] entry: 114 instr_id: 849 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2664
-[cpu0_ROB] entry: 115 instr_id: 850 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2664
-[cpu0_ROB] entry: 116 instr_id: 851 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2664
-[cpu0_ROB] entry: 117 instr_id: 852 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2664
-[cpu0_ROB] entry: 118 instr_id: 853 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2665
-[cpu0_ROB] entry: 119 instr_id: 854 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2665
-[cpu0_ROB] entry: 120 instr_id: 855 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2665
-[cpu0_ROB] entry: 121 instr_id: 856 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2665
-[cpu0_ROB] entry: 122 instr_id: 857 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2666
-[cpu0_ROB] entry: 123 instr_id: 858 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2666
-[cpu0_ROB] entry: 124 instr_id: 859 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2666
-[cpu0_ROB] entry: 125 instr_id: 860 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2666
-[cpu0_ROB] entry: 126 instr_id: 861 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2667
-[cpu0_ROB] entry: 127 instr_id: 862 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2667
-[cpu0_ROB] entry: 128 instr_id: 863 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2667
-[cpu0_ROB] entry: 129 instr_id: 864 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2667
-[cpu0_ROB] entry: 130 instr_id: 865 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2668
-[cpu0_ROB] entry: 131 instr_id: 866 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2668
-[cpu0_ROB] entry: 132 instr_id: 867 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2668
-[cpu0_ROB] entry: 133 instr_id: 868 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2668
-[cpu0_ROB] entry: 134 instr_id: 869 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2669
-[cpu0_ROB] entry: 135 instr_id: 870 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2669
-[cpu0_ROB] entry: 136 instr_id: 871 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2669
-[cpu0_ROB] entry: 137 instr_id: 872 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2669
-[cpu0_ROB] entry: 138 instr_id: 873 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2670
-[cpu0_ROB] entry: 139 instr_id: 874 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2670
-[cpu0_ROB] entry: 140 instr_id: 875 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2670
-[cpu0_ROB] entry: 141 instr_id: 876 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2670
-[cpu0_ROB] entry: 142 instr_id: 877 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2671
-[cpu0_ROB] entry: 143 instr_id: 878 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2671
-[cpu0_ROB] entry: 144 instr_id: 879 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2671
-[cpu0_ROB] entry: 145 instr_id: 880 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2671
-[cpu0_ROB] entry: 146 instr_id: 881 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2672
-[cpu0_ROB] entry: 147 instr_id: 882 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2672
-[cpu0_ROB] entry: 148 instr_id: 883 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2672
-[cpu0_ROB] entry: 149 instr_id: 884 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2672
-[cpu0_ROB] entry: 150 instr_id: 885 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2673
-[cpu0_ROB] entry: 151 instr_id: 886 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2673
-[cpu0_ROB] entry: 152 instr_id: 887 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2673
-[cpu0_ROB] entry: 153 instr_id: 888 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2673
-[cpu0_ROB] entry: 154 instr_id: 889 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2674
-[cpu0_ROB] entry: 155 instr_id: 890 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2680
-[cpu0_ROB] entry: 156 instr_id: 891 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2681
-[cpu0_ROB] entry: 157 instr_id: 892 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2681
-[cpu0_ROB] entry: 158 instr_id: 893 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2682
-[cpu0_ROB] entry: 159 instr_id: 894 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2683
-[cpu0_ROB] entry: 160 instr_id: 895 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2683
-[cpu0_ROB] entry: 161 instr_id: 896 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2683
-[cpu0_ROB] entry: 162 instr_id: 897 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2683
-[cpu0_ROB] entry: 163 instr_id: 898 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2684
-[cpu0_ROB] entry: 164 instr_id: 899 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2685
-[cpu0_ROB] entry: 165 instr_id: 900 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2685
-[cpu0_ROB] entry: 166 instr_id: 901 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2685
-[cpu0_ROB] entry: 167 instr_id: 902 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2685
-[cpu0_ROB] entry: 168 instr_id: 903 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2686
-[cpu0_ROB] entry: 169 instr_id: 904 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2686
-[cpu0_ROB] entry: 170 instr_id: 905 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2686
-[cpu0_ROB] entry: 171 instr_id: 906 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2686
-[cpu0_ROB] entry: 172 instr_id: 907 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2687
-[cpu0_ROB] entry: 173 instr_id: 908 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2687
-[cpu0_ROB] entry: 174 instr_id: 909 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2687
-[cpu0_ROB] entry: 175 instr_id: 910 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2687
-[cpu0_ROB] entry: 176 instr_id: 911 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2688
-[cpu0_ROB] entry: 177 instr_id: 912 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2688
-[cpu0_ROB] entry: 178 instr_id: 913 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2688
-[cpu0_ROB] entry: 179 instr_id: 914 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2692
-[cpu0_ROB] entry: 180 instr_id: 915 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2693
-[cpu0_ROB] entry: 181 instr_id: 916 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2693
-[cpu0_ROB] entry: 182 instr_id: 917 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2697
-[cpu0_ROB] entry: 183 instr_id: 918 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2698
-[cpu0_ROB] entry: 184 instr_id: 919 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2698
-[cpu0_ROB] entry: 185 instr_id: 920 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2698
-[cpu0_ROB] entry: 186 instr_id: 921 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2698
-[cpu0_ROB] entry: 187 instr_id: 922 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2700
-[cpu0_ROB] entry: 188 instr_id: 923 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2701
-[cpu0_ROB] entry: 189 instr_id: 924 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2701
-[cpu0_ROB] entry: 190 instr_id: 925 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2703
-[cpu0_ROB] entry: 191 instr_id: 926 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2704
-[cpu0_ROB] entry: 192 instr_id: 927 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2704
-[cpu0_ROB] entry: 193 instr_id: 928 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2704
-[cpu0_ROB] entry: 194 instr_id: 929 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2704
-[cpu0_ROB] entry: 195 instr_id: 930 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2706
-[cpu0_ROB] entry: 196 instr_id: 931 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2707
-[cpu0_ROB] entry: 197 instr_id: 932 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2707
-[cpu0_ROB] entry: 198 instr_id: 933 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2709
-[cpu0_ROB] entry: 199 instr_id: 934 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2710
-[cpu0_ROB] entry: 200 instr_id: 935 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2710
-[cpu0_ROB] entry: 201 instr_id: 936 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2710
-[cpu0_ROB] entry: 202 instr_id: 937 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2710
-[cpu0_ROB] entry: 203 instr_id: 938 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2712
-[cpu0_ROB] entry: 204 instr_id: 939 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2713
-[cpu0_ROB] entry: 205 instr_id: 940 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2713
-[cpu0_ROB] entry: 206 instr_id: 941 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2715
-[cpu0_ROB] entry: 207 instr_id: 942 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2716
-[cpu0_ROB] entry: 208 instr_id: 943 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2716
-[cpu0_ROB] entry: 209 instr_id: 944 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2716
-[cpu0_ROB] entry: 210 instr_id: 945 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2716
-[cpu0_ROB] entry: 211 instr_id: 946 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2718
-[cpu0_ROB] entry: 212 instr_id: 947 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2719
-[cpu0_ROB] entry: 213 instr_id: 948 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2719
-[cpu0_ROB] entry: 214 instr_id: 949 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2725
-[cpu0_ROB] entry: 215 instr_id: 950 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2726
-[cpu0_ROB] entry: 216 instr_id: 951 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2726
-[cpu0_ROB] entry: 217 instr_id: 952 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2726
-[cpu0_ROB] entry: 218 instr_id: 953 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2726
-[cpu0_ROB] entry: 219 instr_id: 954 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2727
-[cpu0_ROB] entry: 220 instr_id: 955 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2728
-[cpu0_ROB] entry: 221 instr_id: 956 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2728
-[cpu0_ROB] entry: 222 instr_id: 957 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2728
-[cpu0_ROB] entry: 223 instr_id: 958 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2729
-[cpu0_ROB] entry: 224 instr_id: 959 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2729
-[cpu0_ROB] entry: 225 instr_id: 960 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2729
-[cpu0_ROB] entry: 226 instr_id: 961 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2729
-[cpu0_ROB] entry: 227 instr_id: 962 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2731
-[cpu0_ROB] entry: 228 instr_id: 963 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2732
-[cpu0_ROB] entry: 229 instr_id: 964 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2732
-[cpu0_ROB] entry: 230 instr_id: 965 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2732
-[cpu0_ROB] entry: 231 instr_id: 966 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2732
-[cpu0_ROB] entry: 232 instr_id: 967 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2733
-[cpu0_ROB] entry: 233 instr_id: 968 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2733
-[cpu0_ROB] entry: 234 instr_id: 969 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2733
-[cpu0_ROB] entry: 235 instr_id: 970 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: false num_reg_dependent: 0 num_mem_ops: 1 event: 2733
-[cpu0_ROB] entry: 236 instr_id: 971 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2734
-[cpu0_ROB] entry: 237 instr_id: 972 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2734
-[cpu0_ROB] entry: 238 instr_id: 973 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2738
-[cpu0_ROB] entry: 239 instr_id: 974 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2739
-[cpu0_ROB] entry: 240 instr_id: 975 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2739
-[cpu0_ROB] entry: 241 instr_id: 976 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2739
-[cpu0_ROB] entry: 242 instr_id: 977 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2739
-[cpu0_ROB] entry: 243 instr_id: 978 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2741
-[cpu0_ROB] entry: 244 instr_id: 979 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2742
-[cpu0_ROB] entry: 245 instr_id: 980 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2742
-[cpu0_ROB] entry: 246 instr_id: 981 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2745
-[cpu0_ROB] entry: 247 instr_id: 982 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2746
-[cpu0_ROB] entry: 248 instr_id: 983 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2746
-[cpu0_ROB] entry: 249 instr_id: 984 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2746
-[cpu0_ROB] entry: 250 instr_id: 985 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2746
-[cpu0_ROB] entry: 251 instr_id: 986 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2748
-[cpu0_ROB] entry: 252 instr_id: 987 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2749
-[cpu0_ROB] entry: 253 instr_id: 988 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2749
-[cpu0_ROB] entry: 254 instr_id: 989 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2751
-[cpu0_ROB] entry: 255 instr_id: 990 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2752
-[cpu0_ROB] entry: 256 instr_id: 991 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2752
-[cpu0_ROB] entry: 257 instr_id: 992 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2752
-[cpu0_ROB] entry: 258 instr_id: 993 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2752
-[cpu0_ROB] entry: 259 instr_id: 994 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2754
-[cpu0_ROB] entry: 260 instr_id: 995 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2755
-[cpu0_ROB] entry: 261 instr_id: 996 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2755
-[cpu0_ROB] entry: 262 instr_id: 997 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2757
-[cpu0_ROB] entry: 263 instr_id: 998 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2758
-[cpu0_ROB] entry: 264 instr_id: 999 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2758
-[cpu0_ROB] entry: 265 instr_id: 1000 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2758
-[cpu0_ROB] entry: 266 instr_id: 1001 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2758
-[cpu0_ROB] entry: 267 instr_id: 1002 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2760
-[cpu0_ROB] entry: 268 instr_id: 1003 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2761
-[cpu0_ROB] entry: 269 instr_id: 1004 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2761
-[cpu0_ROB] entry: 270 instr_id: 1005 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2763
-[cpu0_ROB] entry: 271 instr_id: 1006 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2764
-[cpu0_ROB] entry: 272 instr_id: 1007 fetch_issued: true fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2764
-[cpu0_ROB] entry: 273 instr_id: 1008 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2764
-[cpu0_ROB] entry: 274 instr_id: 1009 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2764
-[cpu0_ROB] entry: 275 instr_id: 1010 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2766
-[cpu0_ROB] entry: 276 instr_id: 1011 fetch_issued: false fetch_completed: true scheduled: true executed: true completed: true num_reg_dependent: 0 num_mem_ops: 0 event: 2767
+cpu0_ROB empty
 
 Frontend Register Allocation Table        Backend Register Allocation Table
 Arch reg:   0    Phys reg:  -1            Arch reg:   0    Phys reg:  -1
@@ -934,80 +596,10 @@ Phys reg: 127	 Arch reg:   0	 Producer: 0	 Valid: false	 Busy: false
 [cpu0_LQ] entry: 126 empty
 [cpu0_LQ] entry: 127 empty
 
-[cpu0_SQ] entry:   0 instr_id: 818 address: 0xb6bd53b0 fetch_issued: true event_cycle: 2656 LQ waiting: []
-[cpu0_SQ] entry:   1 instr_id: 819 address: 0xb6bd53b8 fetch_issued: true event_cycle: 2656 LQ waiting: []
-[cpu0_SQ] entry:   2 instr_id: 820 address: 0xb6bd53c0 fetch_issued: true event_cycle: 2656 LQ waiting: []
-[cpu0_SQ] entry:   3 instr_id: 821 address: 0xb6bd53c8 fetch_issued: true event_cycle: 2657 LQ waiting: []
-[cpu0_SQ] entry:   4 instr_id: 822 address: 0xb6bd53d0 fetch_issued: true event_cycle: 2657 LQ waiting: []
-[cpu0_SQ] entry:   5 instr_id: 823 address: 0xb6bd53d8 fetch_issued: true event_cycle: 2657 LQ waiting: []
-[cpu0_SQ] entry:   6 instr_id: 824 address: 0xb6bd53e0 fetch_issued: true event_cycle: 2657 LQ waiting: []
-[cpu0_SQ] entry:   7 instr_id: 825 address: 0xb6bd53e8 fetch_issued: true event_cycle: 2658 LQ waiting: []
-[cpu0_SQ] entry:   8 instr_id: 826 address: 0xb6bd53f0 fetch_issued: true event_cycle: 2658 LQ waiting: []
-[cpu0_SQ] entry:   9 instr_id: 827 address: 0xb6bd53f8 fetch_issued: true event_cycle: 2658 LQ waiting: []
-[cpu0_SQ] entry:  10 instr_id: 828 address: 0xb6bd5400 fetch_issued: true event_cycle: 2658 LQ waiting: []
-[cpu0_SQ] entry:  11 instr_id: 829 address: 0xb6bd5408 fetch_issued: true event_cycle: 2659 LQ waiting: []
-[cpu0_SQ] entry:  12 instr_id: 830 address: 0xb6bd5410 fetch_issued: true event_cycle: 2659 LQ waiting: []
-[cpu0_SQ] entry:  13 instr_id: 831 address: 0xb6bd5418 fetch_issued: true event_cycle: 2660 LQ waiting: []
-[cpu0_SQ] entry:  14 instr_id: 832 address: 0xb6bd5420 fetch_issued: true event_cycle: 2660 LQ waiting: []
-[cpu0_SQ] entry:  15 instr_id: 833 address: 0xb6bd5428 fetch_issued: true event_cycle: 2661 LQ waiting: []
-[cpu0_SQ] entry:  16 instr_id: 834 address: 0xb6bd5430 fetch_issued: true event_cycle: 2661 LQ waiting: []
-[cpu0_SQ] entry:  17 instr_id: 835 address: 0xb6bd5438 fetch_issued: true event_cycle: 2662 LQ waiting: []
-[cpu0_SQ] entry:  18 instr_id: 836 address: 0xb6bd5440 fetch_issued: true event_cycle: 2662 LQ waiting: []
-[cpu0_SQ] entry:  19 instr_id: 837 address: 0xb6bd5448 fetch_issued: true event_cycle: 2663 LQ waiting: []
-[cpu0_SQ] entry:  20 instr_id: 838 address: 0xb6bd5450 fetch_issued: true event_cycle: 2663 LQ waiting: []
-[cpu0_SQ] entry:  21 instr_id: 839 address: 0xb6bd5458 fetch_issued: true event_cycle: 2664 LQ waiting: []
-[cpu0_SQ] entry:  22 instr_id: 840 address: 0xb6bd5460 fetch_issued: true event_cycle: 2664 LQ waiting: []
-[cpu0_SQ] entry:  23 instr_id: 841 address: 0xb6bd5468 fetch_issued: true event_cycle: 2665 LQ waiting: []
-[cpu0_SQ] entry:  24 instr_id: 842 address: 0xb6bd5470 fetch_issued: true event_cycle: 2665 LQ waiting: []
-[cpu0_SQ] entry:  25 instr_id: 843 address: 0xb6bd5478 fetch_issued: true event_cycle: 2666 LQ waiting: []
-[cpu0_SQ] entry:  26 instr_id: 844 address: 0xb6bd5480 fetch_issued: true event_cycle: 2666 LQ waiting: []
-[cpu0_SQ] entry:  27 instr_id: 845 address: 0xb6bd5488 fetch_issued: true event_cycle: 2667 LQ waiting: []
-[cpu0_SQ] entry:  28 instr_id: 846 address: 0xb6bd5490 fetch_issued: true event_cycle: 2667 LQ waiting: []
-[cpu0_SQ] entry:  29 instr_id: 847 address: 0xb6bd5498 fetch_issued: true event_cycle: 2668 LQ waiting: []
-[cpu0_SQ] entry:  30 instr_id: 848 address: 0xb6bd54a0 fetch_issued: true event_cycle: 2668 LQ waiting: []
-[cpu0_SQ] entry:  31 instr_id: 849 address: 0xb6bd54a8 fetch_issued: true event_cycle: 2669 LQ waiting: []
-[cpu0_SQ] entry:  32 instr_id: 850 address: 0xb6bd54b0 fetch_issued: true event_cycle: 2669 LQ waiting: []
-[cpu0_SQ] entry:  33 instr_id: 851 address: 0xb6bd54b8 fetch_issued: true event_cycle: 2670 LQ waiting: []
-[cpu0_SQ] entry:  34 instr_id: 852 address: 0xb6bd54c0 fetch_issued: true event_cycle: 2670 LQ waiting: []
-[cpu0_SQ] entry:  35 instr_id: 853 address: 0xb6bd54c8 fetch_issued: true event_cycle: 2671 LQ waiting: []
-[cpu0_SQ] entry:  36 instr_id: 854 address: 0xb6bd54d0 fetch_issued: true event_cycle: 2671 LQ waiting: []
-[cpu0_SQ] entry:  37 instr_id: 855 address: 0xb6bd54d8 fetch_issued: true event_cycle: 2672 LQ waiting: []
-[cpu0_SQ] entry:  38 instr_id: 856 address: 0xb6bd54e0 fetch_issued: true event_cycle: 2672 LQ waiting: []
-[cpu0_SQ] entry:  39 instr_id: 857 address: 0xb6bd54e8 fetch_issued: true event_cycle: 2673 LQ waiting: []
-[cpu0_SQ] entry:  40 instr_id: 858 address: 0xb6bd54f0 fetch_issued: true event_cycle: 2673 LQ waiting: []
-[cpu0_SQ] entry:  41 instr_id: 859 address: 0xb6bd54f8 fetch_issued: true event_cycle: 2674 LQ waiting: []
-[cpu0_SQ] entry:  42 instr_id: 860 address: 0xb6bd5500 fetch_issued: true event_cycle: 2674 LQ waiting: []
-[cpu0_SQ] entry:  43 instr_id: 861 address: 0xb6bd5508 fetch_issued: true event_cycle: 2675 LQ waiting: []
-[cpu0_SQ] entry:  44 instr_id: 862 address: 0xb6bd5510 fetch_issued: true event_cycle: 2675 LQ waiting: []
-[cpu0_SQ] entry:  45 instr_id: 863 address: 0xb6bd5518 fetch_issued: true event_cycle: 2676 LQ waiting: []
-[cpu0_SQ] entry:  46 instr_id: 864 address: 0xb6bd5520 fetch_issued: true event_cycle: 2676 LQ waiting: []
-[cpu0_SQ] entry:  47 instr_id: 865 address: 0xb6bd5528 fetch_issued: true event_cycle: 2677 LQ waiting: []
-[cpu0_SQ] entry:  48 instr_id: 866 address: 0xb6bd5530 fetch_issued: true event_cycle: 2677 LQ waiting: []
-[cpu0_SQ] entry:  49 instr_id: 867 address: 0xb6bd5538 fetch_issued: true event_cycle: 2678 LQ waiting: []
-[cpu0_SQ] entry:  50 instr_id: 868 address: 0xb6bd5540 fetch_issued: true event_cycle: 2678 LQ waiting: []
-[cpu0_SQ] entry:  51 instr_id: 869 address: 0xb6bd5548 fetch_issued: true event_cycle: 2679 LQ waiting: []
-[cpu0_SQ] entry:  52 instr_id: 873 address: 0xd3dc6b08 fetch_issued: true event_cycle: 2679 LQ waiting: []
-[cpu0_SQ] entry:  53 instr_id: 874 address: 0xb6bd53f8 fetch_issued: true event_cycle: 2680 LQ waiting: []
-[cpu0_SQ] entry:  54 instr_id: 875 address: 0xb6bd53e0 fetch_issued: true event_cycle: 2680 LQ waiting: []
-[cpu0_SQ] entry:  55 instr_id: 876 address: 0xb6bd5440 fetch_issued: true event_cycle: 2681 LQ waiting: []
-[cpu0_SQ] entry:  56 instr_id: 884 address: 0xb6bd54b8 fetch_issued: true event_cycle: 2681 LQ waiting: []
-[cpu0_SQ] entry:  57 instr_id: 892 address: 0xb6bd5548 fetch_issued: true event_cycle: 2682 LQ waiting: []
-[cpu0_SQ] entry:  58 instr_id: 900 address: 0xb6bd5430 fetch_issued: true event_cycle: 2685 LQ waiting: []
-[cpu0_SQ] entry:  59 instr_id: 908 address: 0xb6bd53e0 fetch_issued: true event_cycle: 2687 LQ waiting: []
-[cpu0_SQ] entry:  60 instr_id: 916 address: 0xb6bd5438 fetch_issued: true event_cycle: 2693 LQ waiting: []
-[cpu0_SQ] entry:  61 instr_id: 924 address: 0xb6bd53c8 fetch_issued: true event_cycle: 2701 LQ waiting: []
-[cpu0_SQ] entry:  62 instr_id: 932 address: 0xb6bd53d0 fetch_issued: true event_cycle: 2707 LQ waiting: []
-[cpu0_SQ] entry:  63 instr_id: 940 address: 0xb6bd53d8 fetch_issued: true event_cycle: 2713 LQ waiting: []
-[cpu0_SQ] entry:  64 instr_id: 948 address: 0xb6bd53e8 fetch_issued: true event_cycle: 2719 LQ waiting: []
-[cpu0_SQ] entry:  65 instr_id: 956 address: 0xb6bd53f0 fetch_issued: true event_cycle: 2728 LQ waiting: []
-[cpu0_SQ] entry:  66 instr_id: 964 address: 0xb6bd53f8 fetch_issued: true event_cycle: 2732 LQ waiting: []
-[cpu0_SQ] entry:  67 instr_id: 972 address: 0xb6bd5408 fetch_issued: true event_cycle: 2734 LQ waiting: []
-[cpu0_SQ] entry:  68 instr_id: 980 address: 0xb6bd5410 fetch_issued: true event_cycle: 2742 LQ waiting: []
-[cpu0_SQ] entry:  69 instr_id: 988 address: 0xb6bd5418 fetch_issued: true event_cycle: 2749 LQ waiting: []
-[cpu0_SQ] entry:  70 instr_id: 996 address: 0xb6bd5420 fetch_issued: true event_cycle: 2755 LQ waiting: []
-[cpu0_SQ] entry:  71 instr_id: 1004 address: 0xb6bd5468 fetch_issued: true event_cycle: 2761 LQ waiting: []
+cpu0_SQ empty
 
-cpu0_STLB_MSHR empty
+[cpu0_STLB_MSHR] entry:   0 instr_id: 0 address: 0x7e7ad3dae540 v_addr: 0x7e7ad3dae540 type: LOAD ready: false
+[cpu0_STLB_MSHR] entry:   1 instr_id: 2 address: 0x7e7ad3daf1d0 v_addr: 0x7e7ad3daf1d0 type: LOAD ready: false
 
 cpu0_STLB_tags empty
 
@@ -1053,9 +645,18 @@ cpu0_L1I_MSHR empty
 
 cpu0_L1I_tags empty
 
-cpu0_L1I_translation empty
+[cpu0_L1I_translation] entry:   0 instr_id: 0 address: 0x7e7ad3dae540 v_addr: 0x7e7ad3dae540 is_translated: false translate_issued: true event_cycle: 4
+[cpu0_L1I_translation] entry:   1 instr_id: 2 address: 0x7e7ad3daf1d0 v_addr: 0x7e7ad3daf1d0 is_translated: false translate_issued: true event_cycle: 4
+[cpu0_L1I_translation] entry:   2 instr_id: 12 address: 0x7e7ad3daf1f8 v_addr: 0x7e7ad3daf1f8 is_translated: false translate_issued: true event_cycle: 6
+[cpu0_L1I_translation] entry:   3 instr_id: 16 address: 0x7e7ad3daf204 v_addr: 0x7e7ad3daf204 is_translated: false translate_issued: true event_cycle: 6
+[cpu0_L1I_translation] entry:   4 instr_id: 24 address: 0x7e7ad3daf22f v_addr: 0x7e7ad3daf22f is_translated: false translate_issued: true event_cycle: 8
+[cpu0_L1I_translation] entry:   5 instr_id: 28 address: 0x7e7ad3daf243 v_addr: 0x7e7ad3daf243 is_translated: false translate_issued: true event_cycle: 8
+[cpu0_L1I_translation] entry:   6 instr_id: 36 address: 0x7e7ad3daf26a v_addr: 0x7e7ad3daf26a is_translated: false translate_issued: true event_cycle: 10
+[cpu0_L1I_translation] entry:   7 instr_id: 48 address: 0x7e7ad3daf27b v_addr: 0x7e7ad3daf27b is_translated: false translate_issued: true event_cycle: 12
+[cpu0_L1I_translation] entry:   8 instr_id: 50 address: 0x7e7ad3daf284 v_addr: 0x7e7ad3daf284 is_translated: false translate_issued: true event_cycle: 12
 
-cpu0_L1I_RQ empty
+[cpu0_L1I_RQ] entry:   0 instr_id: 60 address: 0x7e7ad3daf2b4 v_addr: 0x7e7ad3daf2b4 type: LOAD translated: false
+[cpu0_L1I_RQ] entry:   1 instr_id: 61 address: 0x7e7ad3daf3a0 v_addr: 0x7e7ad3daf3a0 type: LOAD translated: false
 
 cpu0_L1I_WQ empty
 
@@ -1065,14 +666,4 @@ cpu0_L1D_MSHR empty
 
 cpu0_L1D_tags empty
 
-cpu0_L1D_translation empty
-
-cpu0_L1D_RQ empty
-
-cpu0_L1D_WQ empty
-
-cpu0_L1D_PQ empty
-
-cpu0_L1D_RQ empty
-
-cpu0_L1D_WQ 
+cpu0_L1D_tra

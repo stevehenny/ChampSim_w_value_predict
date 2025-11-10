@@ -800,11 +800,15 @@ long O3_CPU::handle_memory_return()
 
   // Handle D-cache returns with VALUE PREDICTION VERIFICATION
   auto l1d_it = std::begin(L1D_bus.lower_level->returned);
+  
   for (champsim::bandwidth l1d_bw{L1D_BANDWIDTH}; 
        l1d_bw.has_remaining() && l1d_it != std::end(L1D_bus.lower_level->returned); 
        l1d_bw.consume(), ++l1d_it) {
     
     for (auto& lq_entry : LQ) {
+        fmt::print("[LVP] rob_it value predicted: {} {} {} {} \n", 
+                           lq_entry.has_value(), lq_entry->fetch_issued, champsim::block_number{lq_entry->virtual_address},
+          champsim::block_number{l1d_it->v_address});
       if (lq_entry.has_value() && lq_entry->fetch_issued && 
           champsim::block_number{lq_entry->virtual_address} == 
           champsim::block_number{l1d_it->v_address}) {
@@ -812,13 +816,15 @@ long O3_CPU::handle_memory_return()
         // *** VALUE PREDICTION VERIFICATION ***
         auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), 
                                    ooo_model_instr::matches_id(lq_entry->instr_id));
-
+        fmt::print("[LVP] rob_it value predicted: {}\n", 
+                           rob_it->value_predicted);
         if (rob_it != std::end(ROB)) {
           // Extract actual loaded value
           // NOTE: In a real implementation, you'd extract the actual data from the cache line
           // For this example, we use the address as a proxy for the value
           uint64_t actual_value = lq_entry->virtual_address.to<uint64_t>();
-
+          fmt::print("[LVP] rob_it value predicted: {}\n", 
+                           rob_it->value_predicted);
           if (rob_it->value_predicted) {
             // Check if prediction was correct
             bool correct = (rob_it->predicted_value == actual_value);
@@ -826,7 +832,9 @@ long O3_CPU::handle_memory_return()
 
             // Update the predictor
             lvp.update(lq_entry->ip.to<uint64_t>(), actual_value, correct);
-
+            fmt::print("[LVP] instr_id: {} ip: {} predicted: {:#x} actual: {:#x}\n", 
+                           rob_it->instr_id, rob_it->ip, 
+                           rob_it->predicted_value, actual_value);
             if (!correct) {
               // *** MISPREDICTION DETECTED - SQUASH! ***
               if constexpr (champsim::debug_print) {
@@ -859,6 +867,7 @@ long O3_CPU::handle_memory_return()
         // *** END VALUE PREDICTION VERIFICATION ***
 
         lq_entry->finish(std::begin(ROB), std::end(ROB));
+        fmt::print("[LVP] CORREC");
         lq_entry.reset();
         ++progress;
       }
@@ -872,10 +881,14 @@ long O3_CPU::handle_memory_return()
 
 long O3_CPU::retire_rob()
 {
+  auto can_retire = [](const auto& x) { 
+    return x.completed && (!x.value_predicted || x.prediction_correct); 
+  };
+  
   auto [retire_begin, retire_end] =
       champsim::get_span_p(std::cbegin(ROB), std::cend(ROB), 
                           champsim::bandwidth{RETIRE_WIDTH}, 
-                          [](const auto& x) { return x.completed; });
+                          can_retire);  // ← Changed predicate
   
   assert(std::distance(retire_begin, retire_end) >= 0);
   
@@ -1145,7 +1158,43 @@ void O3_CPU::squash_value_misprediction(ooo_model_instr& mispredicted_instr)
       }
     }
   }
+  // ==========================================
+  // STEP 3: Clear frontend pipeline buffers
+  // ==========================================
+  
+  // Remove squashed instructions from IFETCH_BUFFER
+  auto ifetch_remove = std::remove_if(std::begin(IFETCH_BUFFER), std::end(IFETCH_BUFFER),
+    [mispredict_id = mispredicted_instr.instr_id](const auto& instr) {
+      return instr.instr_id > mispredict_id;
+    });
+  IFETCH_BUFFER.erase(ifetch_remove, std::end(IFETCH_BUFFER));
 
+  // Remove squashed instructions from DECODE_BUFFER
+  auto decode_remove = std::remove_if(std::begin(DECODE_BUFFER), std::end(DECODE_BUFFER),
+    [mispredict_id = mispredicted_instr.instr_id](const auto& instr) {
+      return instr.instr_id > mispredict_id;
+    });
+  DECODE_BUFFER.erase(decode_remove, std::end(DECODE_BUFFER));
+
+  // Remove squashed instructions from DIB_HIT_BUFFER
+  auto dib_remove = std::remove_if(std::begin(DIB_HIT_BUFFER), std::end(DIB_HIT_BUFFER),
+    [mispredict_id = mispredicted_instr.instr_id](const auto& instr) {
+      return instr.instr_id > mispredict_id;
+    });
+  DIB_HIT_BUFFER.erase(dib_remove, std::end(DIB_HIT_BUFFER));
+
+  // Remove squashed instructions from DISPATCH_BUFFER
+  auto dispatch_remove = std::remove_if(std::begin(DISPATCH_BUFFER), std::end(DISPATCH_BUFFER),
+    [mispredict_id = mispredicted_instr.instr_id](const auto& instr) {
+      return instr.instr_id > mispredict_id;
+    });
+  DISPATCH_BUFFER.erase(dispatch_remove, std::end(DISPATCH_BUFFER));
+
+  //if constexpr (champsim::debug_print) {
+    fmt::print("[LVP] Cleared frontend pipeline for instructions > {}\n", 
+               mispredicted_instr.instr_id);
+  //}
+  
   if constexpr (champsim::debug_print) {
     fmt::print("[LVP] Squashed {} younger instructions\n", squashed_ids.size());
   }
