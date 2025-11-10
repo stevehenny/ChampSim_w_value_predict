@@ -22,6 +22,7 @@ champsim::operable::operable(champsim::chrono::picoseconds clock_period_) : cloc
 
 long champsim::operable::operate_on(const champsim::chrono::clock& clock)
 {
+  long test = _operate();
   long progress{0};
   while (current_time < clock.now()) {
     progress += _operate();
@@ -33,7 +34,8 @@ long champsim::operable::operate_on(const champsim::chrono::clock& clock)
 long champsim::operable::_operate()
 {
   current_time += clock_period;
-  return operate();
+  long result = operate();
+  return result;
 }
 
 uint64_t champsim::operable::current_cycle() const { return static_cast<uint64_t>(current_time.time_since_epoch() / clock_period); }
