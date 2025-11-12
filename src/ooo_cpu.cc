@@ -127,6 +127,10 @@ void O3_CPU::initialize_instruction()
     input_queue.pop_front();
 
     IFETCH_BUFFER.back().ready_time = current_time;
+    fmt::print("[INIT]   → Fetched instr_id: {} ip: {:#x} stop_fetch: {}\n",
+           IFETCH_BUFFER.back().instr_id,
+           IFETCH_BUFFER.back().ip.to<uint64_t>(),  // ← Convert to uint64_t
+           stop_fetch);
   }
 }
 
@@ -1165,28 +1169,28 @@ void O3_CPU::squash_value_misprediction(ooo_model_instr& mispredicted_instr)
   // Remove squashed instructions from IFETCH_BUFFER
   auto ifetch_remove = std::remove_if(std::begin(IFETCH_BUFFER), std::end(IFETCH_BUFFER),
     [mispredict_id = mispredicted_instr.instr_id](const auto& instr) {
-      return instr.instr_id > mispredict_id;
+      return instr.instr_id >= mispredict_id;
     });
   IFETCH_BUFFER.erase(ifetch_remove, std::end(IFETCH_BUFFER));
 
   // Remove squashed instructions from DECODE_BUFFER
   auto decode_remove = std::remove_if(std::begin(DECODE_BUFFER), std::end(DECODE_BUFFER),
     [mispredict_id = mispredicted_instr.instr_id](const auto& instr) {
-      return instr.instr_id > mispredict_id;
+      return instr.instr_id >= mispredict_id;
     });
   DECODE_BUFFER.erase(decode_remove, std::end(DECODE_BUFFER));
 
   // Remove squashed instructions from DIB_HIT_BUFFER
   auto dib_remove = std::remove_if(std::begin(DIB_HIT_BUFFER), std::end(DIB_HIT_BUFFER),
     [mispredict_id = mispredicted_instr.instr_id](const auto& instr) {
-      return instr.instr_id > mispredict_id;
+      return instr.instr_id >= mispredict_id;
     });
   DIB_HIT_BUFFER.erase(dib_remove, std::end(DIB_HIT_BUFFER));
 
   // Remove squashed instructions from DISPATCH_BUFFER
   auto dispatch_remove = std::remove_if(std::begin(DISPATCH_BUFFER), std::end(DISPATCH_BUFFER),
     [mispredict_id = mispredicted_instr.instr_id](const auto& instr) {
-      return instr.instr_id > mispredict_id;
+      return instr.instr_id >= mispredict_id;
     });
   DISPATCH_BUFFER.erase(dispatch_remove, std::end(DISPATCH_BUFFER));
 
