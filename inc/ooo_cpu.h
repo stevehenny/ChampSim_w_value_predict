@@ -26,13 +26,13 @@
 #include <bitset>
 #include <deque>
 #include <limits>
+#include <list>
 #include <memory>
 #include <optional>
 #include <queue>
 #include <stdexcept>
 #include <type_traits>
 #include <vector>
-#include <list>
 
 #include "bandwidth.h"
 #include "champsim.h"
@@ -83,98 +83,103 @@ struct LSQ_ENTRY : champsim::program_ordered<LSQ_ENTRY> {
 // cpu
 class O3_CPU : public champsim::operable
 {
-// Last Value Predictor structure
-struct LastValuePredictor {
-  static constexpr size_t MAX_ENTRIES = 1024; // Configurable size (1K entries)
-  
-  std::unordered_map<uint64_t, uint64_t> value_table; // PC -> last value
-  std::unordered_map<uint64_t, bool> confidence_table; // PC -> seen before
-  std::list<uint64_t> lru_list; // For LRU replacement
-  std::unordered_map<uint64_t, std::list<uint64_t>::iterator> lru_map; // PC -> position in LRU list
-  
-  uint64_t predictions = 0;
-  uint64_t correct_predictions = 0;
-  uint64_t incorrect_predictions = 0;
-  uint64_t squashes = 0;
-  uint64_t evictions = 0; // Track how many entries were evicted
-  uint64_t early_executions = 0;  // Loads that executed with prediction
-  
-  // Predict value for a given PC
-  bool predict(uint64_t pc, uint64_t& predicted_value) {
-    auto it = value_table.find(pc);
-    if (it != value_table.end() && confidence_table[pc]) {
-      predicted_value = it->second;
-      predictions++;
-      
-      // Update LRU: move to front (most recently used)
-      touch_lru(pc);
-      
-      return true; // Prediction available
-    }
-    return false; // No prediction
-  }
-  
-  // Update predictor with actual value
-  void update(uint64_t pc, uint64_t actual_value, bool was_correct) {
-    // Check if we need to evict an entry
-    if (value_table.find(pc) == value_table.end() && value_table.size() >= MAX_ENTRIES) {
-      // Evict least recently used entry
-      uint64_t lru_pc = lru_list.back();
-      lru_list.pop_back();
-      lru_map.erase(lru_pc);
-      value_table.erase(lru_pc);
-      confidence_table.erase(lru_pc);
-      evictions++;
-    }
-    
-    // Update the value
-    value_table[pc] = actual_value;
-    confidence_table[pc] = true;
-    
-    // Update LRU
-    touch_lru(pc);
-    
-    if (was_correct) {
-      correct_predictions++;
-    } else {
-      incorrect_predictions++;
-    }
-  }
-  
-  // Helper function to update LRU list
-  void touch_lru(uint64_t pc) {
-    // Remove from current position if it exists
-    auto it = lru_map.find(pc);
-    if (it != lru_map.end()) {
-      lru_list.erase(it->second);
-    }
-    
-    // Add to front (most recently used)
-    lru_list.push_front(pc);
-    lru_map[pc] = lru_list.begin();
-  }
-  
-  // Print statistics
-  void print_stats() {
-    fmt::print("\nLast Value Predictor Stats:\n");
-    fmt::print("  Predictor Size: {} entries\n", MAX_ENTRIES);
-    fmt::print("  Current Occupancy: {}\n", value_table.size());
-    fmt::print("  Total Evictions: {}\n", evictions);
-    fmt::print("  Early Executions: {}\n", early_executions);
-    if (predictions > 0) {
-      fmt::print("  Total predictions: {}\n", predictions);
-      fmt::print("  Correct: {}\n", correct_predictions);
-      fmt::print("  Incorrect: {}\n", incorrect_predictions);
-      fmt::print("  Squashes: {}\n", squashes);
-      fmt::print("  Accuracy: {:.2f}%\n", (100.0 * static_cast<double>(correct_predictions) / static_cast<double>(predictions)));
-    } else {
-      fmt::print("  No predictions made\n");
-    }
-  }
-};
+  // Last Value Predictor structure
+  struct LastValuePredictor {
+    static constexpr size_t MAX_ENTRIES = 1024; // Configurable size (1K entries)
 
-// Add this member variable in the O3_CPU class (add it near other member variables)
-LastValuePredictor lvp;
+    std::unordered_map<uint64_t, uint64_t> value_table;                  // PC -> last value
+    std::unordered_map<uint64_t, bool> confidence_table;                 // PC -> seen before
+    std::list<uint64_t> lru_list;                                        // For LRU replacement
+    std::unordered_map<uint64_t, std::list<uint64_t>::iterator> lru_map; // PC -> position in LRU list
+
+    uint64_t predictions = 0;
+    uint64_t correct_predictions = 0;
+    uint64_t incorrect_predictions = 0;
+    uint64_t squashes = 0;
+    uint64_t evictions = 0;        // Track how many entries were evicted
+    uint64_t early_executions = 0; // Loads that executed with prediction
+
+    // Predict value for a given PC
+    bool predict(uint64_t pc, uint64_t& predicted_value)
+    {
+      auto it = value_table.find(pc);
+      if (it != value_table.end() && confidence_table[pc]) {
+        predicted_value = it->second;
+        predictions++;
+
+        // Update LRU: move to front (most recently used)
+        touch_lru(pc);
+
+        return true; // Prediction available
+      }
+      return false; // No prediction
+    }
+
+    // Update predictor with actual value
+    void update(uint64_t pc, uint64_t actual_value, bool was_correct)
+    {
+      // Check if we need to evict an entry
+      if (value_table.find(pc) == value_table.end() && value_table.size() >= MAX_ENTRIES) {
+        // Evict least recently used entry
+        uint64_t lru_pc = lru_list.back();
+        lru_list.pop_back();
+        lru_map.erase(lru_pc);
+        value_table.erase(lru_pc);
+        confidence_table.erase(lru_pc);
+        evictions++;
+      }
+
+      // Update the value
+      value_table[pc] = actual_value;
+      confidence_table[pc] = true;
+
+      // Update LRU
+      touch_lru(pc);
+
+      if (was_correct) {
+        correct_predictions++;
+      } else {
+        incorrect_predictions++;
+      }
+    }
+
+    // Helper function to update LRU list
+    void touch_lru(uint64_t pc)
+    {
+      // Remove from current position if it exists
+      auto it = lru_map.find(pc);
+      if (it != lru_map.end()) {
+        lru_list.erase(it->second);
+      }
+
+      // Add to front (most recently used)
+      lru_list.push_front(pc);
+      lru_map[pc] = lru_list.begin();
+    }
+
+    // Print statistics
+    void print_stats()
+    {
+      fmt::print("\nLast Value Predictor Stats:\n");
+      fmt::print("  Predictor Size: {} entries\n", MAX_ENTRIES);
+      fmt::print("  Current Occupancy: {}\n", value_table.size());
+      fmt::print("  Total Evictions: {}\n", evictions);
+      fmt::print("  Early Executions: {}\n", early_executions);
+      if (predictions > 0) {
+        fmt::print("  Total predictions: {}\n", predictions);
+        fmt::print("  Correct: {}\n", correct_predictions);
+        fmt::print("  Incorrect: {}\n", incorrect_predictions);
+        fmt::print("  Squashes: {}\n", squashes);
+        fmt::print("  Accuracy: {:.2f}%\n", (100.0 * static_cast<double>(correct_predictions) / static_cast<double>(predictions)));
+      } else {
+        fmt::print("  No predictions made\n");
+      }
+    }
+  };
+
+  // Add this member variable in the O3_CPU class (add it near other member variables)
+  LastValuePredictor lvp;
+
 public:
   uint32_t cpu = 0;
 

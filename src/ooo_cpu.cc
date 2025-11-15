@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <iostream>
 #include <numeric>
 #include <fmt/chrono.h>
 #include <fmt/core.h>
@@ -37,21 +38,35 @@ constexpr long long STAT_PRINTING_PERIOD = 10000000;
 long O3_CPU::operate()
 {
   long progress{0};
-  progress += retire_rob();                    // retire
-  progress += complete_inflight_instruction(); // finalize execution
-  progress += execute_instruction();           // execute instructions
-  progress += schedule_instruction();          // schedule instructions
-  progress += handle_memory_return();          // finalize memory transactions
-  progress += operate_lsq();                   // execute memory transactions
+  long rob = retire_rob();
+  progress += rob; // retire
+  long inflight = complete_inflight_instruction();
+  progress += inflight; // finalize execution
+  long execution_instr = execute_instruction();
+  progress += execution_instr; // execute instructions
+  long schedule = schedule_instruction();
+  progress += schedule; // schedule instructions
+  long handle = handle_memory_return();
+  progress += handle; // finalize memory transactions
+  long lsq = operate_lsq();
+  progress += lsq; // execute memory transactions
 
-  progress += dispatch_instruction(); // dispatch
-  progress += decode_instruction();   // decode
-  progress += promote_to_decode();
+  long dispatch = dispatch_instruction();
+  progress += dispatch; // dispatch
+  long decode = decode_instruction();
+  progress += decode; // decode
+  long promote = promote_to_decode();
+  progress += promote;
 
-  progress += fetch_instruction(); // fetch
-  progress += check_dib();
+  long fetch = fetch_instruction();
+  progress += fetch; // fetch
+  long dib = check_dib();
+  progress += dib;
   initialize_instruction();
 
+  // if (progress) {
+  //   std::cout << progress << '\n';
+  // }
   // heartbeat
   if (show_heartbeat && (num_retired >= (last_heartbeat_instr + STAT_PRINTING_PERIOD))) {
     using double_duration = std::chrono::duration<double, typename champsim::chrono::picoseconds::period>;
@@ -107,7 +122,6 @@ void O3_CPU::end_phase(unsigned finished_cpu)
     fmt::print("\n");
     lvp.print_stats();
     // *** END ADDITION ***
-    
   }
 }
 
@@ -482,12 +496,10 @@ long O3_CPU::execute_instruction()
       // For loads, we can make predictions even if sources aren't ready (for address gen)
       // But typically loads don't predict their own value - they just forward it
       // The key insight: instructions that CONSUME predicted values should check validity
-      
+
       // Check if all source registers are valid (not waiting on mispredicted values)
       ready = std::all_of(std::begin(rob_it->source_registers), std::end(rob_it->source_registers),
-                          [&alloc = std::as_const(reg_allocator)](auto srcreg) { 
-                            return alloc.isValid(srcreg); 
-                          });
+                          [&alloc = std::as_const(reg_allocator)](auto srcreg) { return alloc.isValid(srcreg); });
 
       if (ready) {
         do_execution(*rob_it);
@@ -512,10 +524,9 @@ void O3_CPU::do_execution(ooo_model_instr& instr)
       reg_allocator.complete_dest_register(dreg);
     }
     lvp.early_executions++;
-    
-    //if constexpr (champsim::debug_print) {
-      fmt::print("[LVP] FORWARD predicted value instr_id: {} ip: {} value: {:#x}\n", 
-                 instr.instr_id, instr.ip, instr.predicted_value);
+
+    // if constexpr (champsim::debug_print) {
+    fmt::print("[LVP] FORWARD predicted value instr_id: {} ip: {} value: {:#x}\n", instr.instr_id, instr.ip, instr.predicted_value);
     //}
   }
 
@@ -534,11 +545,9 @@ void O3_CPU::do_execution(ooo_model_instr& instr)
   }
 
   if constexpr (champsim::debug_print) {
-    fmt::print("[ROB] {} instr_id: {} ready_time: {}\n", __func__, instr.instr_id, 
-               instr.ready_time.time_since_epoch() / clock_period);
+    fmt::print("[ROB] {} instr_id: {} ready_time: {}\n", __func__, instr.instr_id, instr.ready_time.time_since_epoch() / clock_period);
   }
 }
-
 
 void O3_CPU::do_memory_scheduling(ooo_model_instr& instr)
 {
@@ -607,19 +616,17 @@ long O3_CPU::operate_lsq()
   for (auto& lq_entry : LQ) {
     if (lq_entry.has_value() && !lq_entry->fetch_issued) {
       // Find the corresponding ROB entry
-      auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), 
-                                 ooo_model_instr::matches_id(lq_entry->instr_id));
-      
+      auto rob_it = std::find_if(std::begin(ROB), std::end(ROB), ooo_model_instr::matches_id(lq_entry->instr_id));
+
       if (rob_it != std::end(ROB) && !rob_it->value_predicted) {
         // Try to predict the value
         uint64_t predicted_val;
         if (lvp.predict(lq_entry->ip.to<uint64_t>(), predicted_val)) {
           rob_it->predicted_value = predicted_val;
           rob_it->value_predicted = true;
-          
+
           if constexpr (champsim::debug_print) {
-            fmt::print("[LVP] PREDICT instr_id: {} ip: {} predicted: {:#x}\n", 
-                      rob_it->instr_id, rob_it->ip, predicted_val);
+            fmt::print("[LVP] PREDICT instr_id: {} ip: {} predicted: {:#x}\n", rob_it->instr_id, rob_it->ip, predicted_val);
           }
         }
       }
@@ -769,20 +776,19 @@ long O3_CPU::handle_memory_return()
 
             if (!correct) {
               // *** SQUASH DEPENDENT INSTRUCTIONS ***
-              //if constexpr (champsim::debug_print) {
-                fmt::print("[LVP] MISPREDICT instr_id: {} ip: {} predicted: {:#x} actual: {:#x}\n", 
-                           rob_it->instr_id, rob_it->ip, rob_it->predicted_value, actual_value);
+              // if constexpr (champsim::debug_print) {
+              fmt::print("[LVP] MISPREDICT instr_id: {} ip: {} predicted: {:#x} actual: {:#x}\n", rob_it->instr_id, rob_it->ip, rob_it->predicted_value,
+                         actual_value);
               //}
 
               // Update the instruction with correct value
               rob_it->predicted_value = actual_value;
-              
+
               // Squash all dependent instructions
               squash_value_misprediction(*rob_it);
             } else {
-              //if constexpr (champsim::debug_print) {
-                fmt::print("[LVP] CORRECT instr_id: {} ip: {} value: {:#x}\n", 
-                           rob_it->instr_id, rob_it->ip, actual_value);
+              // if constexpr (champsim::debug_print) {
+              fmt::print("[LVP] CORRECT instr_id: {} ip: {} value: {:#x}\n", rob_it->instr_id, rob_it->ip, actual_value);
               //}
             }
           } else {
@@ -950,8 +956,8 @@ bool CacheBus::issue_write(request_type data_packet)
 
 void O3_CPU::squash_value_misprediction(ooo_model_instr& mispredicted_instr)
 {
-  //if constexpr (champsim::debug_print) {
-    fmt::print("[LVP] SQUASH instr_id: {} ip: {}\n", mispredicted_instr.instr_id, mispredicted_instr.ip);
+  // if constexpr (champsim::debug_print) {
+  fmt::print("[LVP] SQUASH instr_id: {} ip: {}\n", mispredicted_instr.instr_id, mispredicted_instr.ip);
   //}
 
   lvp.squashes++;
@@ -959,7 +965,7 @@ void O3_CPU::squash_value_misprediction(ooo_model_instr& mispredicted_instr)
   // Find all instructions in ROB that depend on the mispredicted value
   // We need to walk forward from the mispredicted instruction
   bool found_mispredict = false;
-  
+
   for (auto& rob_entry : ROB) {
     // Skip until we find the mispredicted instruction
     if (!found_mispredict) {
@@ -972,7 +978,7 @@ void O3_CPU::squash_value_misprediction(ooo_model_instr& mispredicted_instr)
     // Now we're looking at younger instructions
     // Check if this instruction depends on the mispredicted one
     bool is_dependent = false;
-    
+
     // Check register dependencies
     for (auto src_reg : rob_entry.source_registers) {
       for (auto dest_reg : mispredicted_instr.destination_registers) {
@@ -983,14 +989,14 @@ void O3_CPU::squash_value_misprediction(ooo_model_instr& mispredicted_instr)
           break;
         }
       }
-      if (is_dependent) break;
+      if (is_dependent)
+        break;
     }
 
     // If dependent, squash this instruction
     if (is_dependent) {
-      //if constexpr (champsim::debug_print) {
-        fmt::print("[LVP] SQUASH dependent instr_id: {} (depends on {})\n", 
-                   rob_entry.instr_id, mispredicted_instr.instr_id);
+      // if constexpr (champsim::debug_print) {
+      fmt::print("[LVP] SQUASH dependent instr_id: {} (depends on {})\n", rob_entry.instr_id, mispredicted_instr.instr_id);
       //}
 
       // Mark instruction for re-execution
@@ -998,7 +1004,7 @@ void O3_CPU::squash_value_misprediction(ooo_model_instr& mispredicted_instr)
         rob_entry.executed = false;
         rob_entry.ready_time = current_time + EXEC_LATENCY;
       }
-      
+
       // Mark as incomplete
       if (rob_entry.completed) {
         rob_entry.completed = false;
@@ -1008,8 +1014,8 @@ void O3_CPU::squash_value_misprediction(ooo_model_instr& mispredicted_instr)
       for (auto dreg : rob_entry.destination_registers) {
         // Mark the physical register as invalid, forcing dependents to wait
         // The register allocator will handle the validity bits
-        //if constexpr (champsim::debug_print) {
-          fmt::print("[LVP] Invalidating register for instr_id: {}\n", rob_entry.instr_id);
+        // if constexpr (champsim::debug_print) {
+        fmt::print("[LVP] Invalidating register for instr_id: {}\n", rob_entry.instr_id);
         //}
       }
 
